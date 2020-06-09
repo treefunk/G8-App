@@ -1,0 +1,2 @@
+rootProject.name='G8-App'
+include ':app'
