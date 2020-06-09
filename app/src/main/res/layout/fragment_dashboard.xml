@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appbg"
+    >
+
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_welcome_user"
+
+        app:layout_constraintVertical_chainStyle="packed"
+
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+
+        android:src="@drawable/user_icon"
+        android:scaleType="centerInside"
+
+        />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintLeft_toRightOf="@id/app_logo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/app_logo"
+        app:layout_constraintBottom_toBottomOf="@id/app_logo"
+        app:layout_constraintHorizontal_bias="1"
+
+        android:layout_marginRight="@dimen/_10sdp"
+
+        android:text="LOGOUT"
+        android:textSize="@dimen/_8ssp"
+        android:background="@drawable/shape_rectangle_dark_red_button"
+        android:fontFamily="@font/gotham_medium"
+        android:textColor="@color/colorWhiteRed"
+
+        />
+
+    <ImageView
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toTopOf="@id/btn_logout"
+        app:layout_constraintLeft_toLeftOf="@id/btn_logout"
+        app:layout_constraintRight_toRightOf="@id/btn_logout"
+        app:layout_constraintBottom_toBottomOf="@id/btn_logout"
+
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@drawable/shape_rectangle_darker_red_button"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_welcome_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/app_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hor_guideline"
+
+        android:layout_marginBottom="@dimen/_16sdp"
+
+        android:text="@string/label_welcome"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:fontFamily="@font/gotham_medium"
+        android:textColor="@color/colorDarkRed"
+        android:letterSpacing="0.11"
+        android:textSize="@dimen/_14ssp"
+
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hor_guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.27" />
+
+    <View
+        android:id="@+id/box_inout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/hor_guideline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/box_pin_your_store"
+        app:layout_constraintBottom_toTopOf="@id/box_announcements"
+
+        android:layout_marginLeft="@dimen/_45sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+        />
+
+    <ImageView
+        android:id="@+id/img_inout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_inout"
+        app:layout_constraintRight_toRightOf="@id/box_inout"
+        app:layout_constraintLeft_toLeftOf="@id/box_inout"
+        app:layout_constraintBottom_toTopOf="@id/label_inout"
+
+
+        android:src="@drawable/img_timeinout"
+        android:scaleType="centerInside"
+        android:tint="@color/colorDarkRed"
+
+        />
+
+    <TextView
+        android:id="@+id/label_inout"
+        android:layout_width="@dimen/_66sdp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_inout"
+        app:layout_constraintRight_toRightOf="@id/box_inout"
+        app:layout_constraintLeft_toLeftOf="@id/box_inout"
+        app:layout_constraintBottom_toBottomOf="@id/box_inout"
+
+        android:text="@string/label_timein_timeout"
+        style="@style/dashboardRedText"
+        />
+
+    <View
+        android:id="@+id/box_pin_your_store"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/hor_guideline"
+        app:layout_constraintLeft_toRightOf="@id/box_inout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/box_payslip"
+
+        android:layout_marginRight="@dimen/_45sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+
+        />
+
+    <ImageView
+        android:id="@+id/img_pin_your_store"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_pin_your_store"
+        app:layout_constraintRight_toRightOf="@id/box_pin_your_store"
+        app:layout_constraintLeft_toLeftOf="@id/box_pin_your_store"
+        app:layout_constraintBottom_toTopOf="@id/label_pin_your_store"
+
+
+        android:src="@drawable/img_pin_store"
+        android:scaleType="centerInside"
+        android:tint="@color/redTintDisable"
+
+        />
+
+    <TextView
+        android:id="@+id/label_pin_your_store"
+        android:layout_width="@dimen/_66sdp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_pin_your_store"
+        app:layout_constraintRight_toRightOf="@id/box_pin_your_store"
+        app:layout_constraintLeft_toLeftOf="@id/box_pin_your_store"
+        app:layout_constraintBottom_toBottomOf="@id/box_pin_your_store"
+
+        android:text="@string/label_pin_your_store"
+        style="@style/dashboardRedText"
+        android:textColor="@drawable/selector_text_red_with_disable"
+        android:textSize="@dimen/_10ssp"
+        />
+
+    <View
+        android:id="@+id/box_announcements"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/box_inout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/box_payslip"
+        app:layout_constraintBottom_toTopOf="@id/box_sales_report"
+
+        android:layout_marginLeft="@dimen/_45sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+        />
+
+    <ImageView
+        android:id="@+id/img_announcements"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_announcements"
+        app:layout_constraintRight_toRightOf="@id/box_announcements"
+        app:layout_constraintLeft_toLeftOf="@id/box_announcements"
+        app:layout_constraintBottom_toTopOf="@id/label_announcements"
+
+
+        android:src="@drawable/img_announcement_icon"
+        android:scaleType="centerInside"
+        android:tint="@color/colorDarkRed"
+
+        />
+
+    <TextView
+        android:id="@+id/label_announcements"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_announcements"
+        app:layout_constraintRight_toRightOf="@id/box_announcements"
+        app:layout_constraintLeft_toLeftOf="@id/box_announcements"
+        app:layout_constraintBottom_toBottomOf="@id/box_announcements"
+
+        android:text="@string/label_announcements"
+        android:breakStrategy="simple"
+        style="@style/dashboardRedText"
+        android:textSize="@dimen/_9ssp"
+        />
+
+    <View
+        android:id="@+id/box_payslip"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/box_pin_your_store"
+        app:layout_constraintLeft_toRightOf="@id/box_announcements"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/box_message_to_admin"
+
+        android:layout_marginRight="@dimen/_45sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+
+        />
+
+    <ImageView
+        android:id="@+id/img_payslip"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_payslip"
+        app:layout_constraintRight_toRightOf="@id/box_payslip"
+        app:layout_constraintLeft_toLeftOf="@id/box_payslip"
+        app:layout_constraintBottom_toTopOf="@id/label_payslip"
+
+
+        android:src="@drawable/img_payslip"
+        android:scaleType="centerInside"
+        android:tint="@color/redTintDisable"
+
+        />
+
+    <TextView
+        android:id="@+id/label_payslip"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_payslip"
+        app:layout_constraintRight_toRightOf="@id/box_payslip"
+        app:layout_constraintLeft_toLeftOf="@id/box_payslip"
+        app:layout_constraintBottom_toBottomOf="@id/box_payslip"
+
+        android:text="@string/label_payslip"
+        android:breakStrategy="high_quality"
+        style="@style/dashboardRedText"
+        android:textColor="@drawable/selector_text_red_with_disable"
+        android:textSize="@dimen/_10ssp"
+        />
+
+    <View
+        android:id="@+id/box_sales_report"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/box_announcements"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/box_message_to_admin"
+        app:layout_constraintBottom_toTopOf="@id/box_upload_from_gallery"
+
+        android:layout_marginLeft="@dimen/_45sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+        />
+
+    <ImageView
+        android:id="@+id/img_sales_report"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_sales_report"
+        app:layout_constraintRight_toRightOf="@id/box_sales_report"
+        app:layout_constraintLeft_toLeftOf="@id/box_sales_report"
+        app:layout_constraintBottom_toTopOf="@id/label_sales_report"
+
+
+        android:src="@drawable/img_sales_report"
+        android:scaleType="centerInside"
+        android:tint="@color/colorDarkRed"
+
+        />
+
+    <TextView
+        android:id="@+id/label_sales_report"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_sales_report"
+        app:layout_constraintRight_toRightOf="@id/box_sales_report"
+        app:layout_constraintLeft_toLeftOf="@id/box_sales_report"
+        app:layout_constraintBottom_toBottomOf="@id/box_sales_report"
+
+        android:text="@string/label_sales_report"
+        android:breakStrategy="high_quality"
+        style="@style/dashboardRedText"
+        android:textSize="@dimen/_10ssp"
+        />
+
+    <View
+        android:id="@+id/box_message_to_admin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/box_payslip"
+        app:layout_constraintLeft_toRightOf="@id/box_sales_report"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/box_settings"
+
+        android:layout_marginRight="@dimen/_45sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+
+        />
+
+    <ImageView
+        android:id="@+id/img_message_to_admin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_message_to_admin"
+        app:layout_constraintRight_toRightOf="@id/box_message_to_admin"
+        app:layout_constraintLeft_toLeftOf="@id/box_message_to_admin"
+        app:layout_constraintBottom_toTopOf="@id/label_message_to_admin"
+
+        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/img_urgent_message"
+        android:tint="@color/redTintDisable"
+
+        />
+
+    <TextView
+        android:id="@+id/label_message_to_admin"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_20sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_message_to_admin"
+        app:layout_constraintRight_toRightOf="@id/box_message_to_admin"
+        app:layout_constraintLeft_toLeftOf="@id/box_message_to_admin"
+        app:layout_constraintBottom_toBottomOf="@id/box_message_to_admin"
+
+        android:text="@string/label_urgent_message_to_admin"
+        android:breakStrategy="high_quality"
+        style="@style/dashboardRedText"
+        android:textColor="@drawable/selector_text_red_with_disable"
+        android:textSize="@dimen/_9ssp"
+        />
+
+    <View
+        android:id="@+id/box_upload_from_gallery"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/box_sales_report"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/box_settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginLeft="@dimen/_45sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+        />
+
+    <ImageView
+        android:id="@+id/img_upload_from_gallery"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_upload_from_gallery"
+        app:layout_constraintRight_toRightOf="@id/box_upload_from_gallery"
+        app:layout_constraintLeft_toLeftOf="@id/box_upload_from_gallery"
+        app:layout_constraintBottom_toTopOf="@id/label_upload_timeslip"
+
+
+        android:src="@drawable/img_upload_timeslip"
+        android:scaleType="centerInside"
+        android:tint="@color/colorDarkRed"
+
+        />
+
+    <TextView
+        android:id="@+id/label_upload_timeslip"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_upload_from_gallery"
+        app:layout_constraintRight_toRightOf="@id/box_upload_from_gallery"
+        app:layout_constraintLeft_toLeftOf="@id/box_upload_from_gallery"
+        app:layout_constraintBottom_toBottomOf="@id/box_upload_from_gallery"
+
+        android:text="@string/label_upload_timeslip"
+        android:breakStrategy="high_quality"
+        style="@style/dashboardRedText"
+        android:textSize="@dimen/_10ssp"
+        />
+
+    <View
+        android:id="@+id/box_settings"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rectangle_white"
+
+        app:layout_constraintTop_toBottomOf="@id/box_message_to_admin"
+        app:layout_constraintLeft_toRightOf="@id/box_upload_from_gallery"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginRight="@dimen/_45sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_13sdp"
+
+
+        />
+
+    <ImageView
+        android:id="@+id/img_settings"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/box_settings"
+        app:layout_constraintRight_toRightOf="@id/box_settings"
+        app:layout_constraintLeft_toLeftOf="@id/box_settings"
+        app:layout_constraintBottom_toTopOf="@id/label_settings"
+
+
+        android:src="@drawable/img_settings"
+        android:scaleType="centerInside"
+        android:tint="@color/colorDarkRed"
+
+        />
+
+    <TextView
+        android:id="@+id/label_settings"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_23sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/img_settings"
+        app:layout_constraintRight_toRightOf="@id/box_settings"
+        app:layout_constraintLeft_toLeftOf="@id/box_settings"
+        app:layout_constraintBottom_toBottomOf="@id/box_settings"
+
+        android:text="@string/label_settings"
+        android:breakStrategy="high_quality"
+        style="@style/dashboardRedText"
+        android:textSize="@dimen/_10ssp"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingLeft="@dimen/_20sdp"
+    android:paddingRight="@dimen/_20sdp"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/appbg">
+
+    <ImageButton
+        android:id="@+id/ib_left_arrow"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_month_year"
+        app:layout_constraintBottom_toBottomOf="@id/tv_month_year"
+        app:layout_constraintRight_toLeftOf="@id/tv_month_year"
+
+        android:src="@drawable/img_back_yellow"
+        android:scaleType="centerInside"
+        android:background="@android:color/transparent"
+        />
+
+    <TextView
+        android:id="@+id/tv_month_year"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintLeft_toRightOf="@id/ib_left_arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/ib_right_arrow"
+        app:layout_constraintBottom_toTopOf="@id/red_box_label"
+
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+
+
+        android:text="NOVEMBER 2019"
+        android:textSize="@dimen/_18ssp"
+        android:textFontWeight="600"
+        android:gravity="center"
+        android:textColor="@color/colorTextYellow"
+        android:fontFamily="@font/roboto_medium"
+        />
+
+    <ImageButton
+        android:id="@+id/ib_right_arrow"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_month_year"
+        app:layout_constraintBottom_toBottomOf="@id/tv_month_year"
+        app:layout_constraintLeft_toRightOf="@id/tv_month_year"
+
+        android:src="@drawable/img_next_yellow"
+        android:scaleType="centerInside"
+        android:background="@android:color/transparent"
+        />
+
+    <View
+        android:id="@+id/red_box_label"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_33sdp"
+        android:background="@drawable/shape_rectangle_dark_red_no_border_radius"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_month_year"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_sales_report"
+
+        android:layout_marginBottom="@dimen/_2sdp"
+
+        />
+
+    <TextView
+        android:id="@+id/label_day"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+
+        app:layout_constraintLeft_toLeftOf="@id/red_box_label"
+        app:layout_constraintTop_toTopOf="@id/red_box_label"
+        app:layout_constraintRight_toLeftOf="@id/label_total_sales"
+        app:layout_constraintBottom_toBottomOf="@id/red_box_label"
+        android:layout_marginLeft="@dimen/_20sdp"
+
+        android:text="DAY"
+        android:fontFamily="@font/roboto_bold"
+        android:textFontWeight="600"
+        android:textSize="@dimen/_15ssp"
+        android:gravity="left|center_vertical"
+        android:textColor="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/label_total_sales"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintLeft_toRightOf="@id/label_day"
+        app:layout_constraintRight_toRightOf="@id/red_box_label"
+        app:layout_constraintTop_toTopOf="@id/red_box_label"
+        app:layout_constraintBottom_toBottomOf="@id/red_box_label"
+
+        android:layout_marginRight="@dimen/_10sdp"
+
+        android:text="TOTAL SALES (IN PHP)"
+        android:fontFamily="@font/roboto_bold"
+        android:textFontWeight="600"
+        android:textSize="@dimen/_15ssp"
+        android:gravity="right|center_vertical"
+        android:textColor="@android:color/white"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_sales_report"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toBottomOf="@id/red_box_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_update"
+
+        android:layout_marginBottom="@dimen/_25sdp"
+
+
+
+        tools:listitem="@layout/item_sales_report"
+
+        />
+
+    <ImageView
+        android:id="@+id/back_update"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintLeft_toLeftOf="@id/btn_update"
+        app:layout_constraintTop_toTopOf="@id/btn_update"
+        app:layout_constraintRight_toRightOf="@id/btn_update"
+        app:layout_constraintBottom_toBottomOf="@id/btn_update"
+        android:layout_marginTop="@dimen/_10sdp"
+
+        android:background="@drawable/shape_rectangle_light_red_button"
+        />
+
+
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/rv_sales_report"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginBottom="@dimen/_29sdp"
+
+        android:background="@drawable/shape_rectangle_red_button"
+        android:textColor="@android:color/white"
+        android:text="UPDATE"
+        android:textSize="@dimen/_25ssp"
+        android:fontFamily="@font/roboto_bold"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

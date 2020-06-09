@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">@color/colorLightRed</color>
+    <color name="colorPrimaryDark">@color/colorDarkRed</color>
+    <color name="colorAccent">@color/colorDarkerRedv2</color>
+
+    <color name="colorWhiteRed">#B5A4A6</color>
+    <color name="colorLightGrey">#5C5C5D</color>
+
+    <color name="colorLightGreyButton">#737373</color>
+    <color name="colorLightDarkGreyButton">#565656</color>
+
+    <color name="colorLightRed">#BC3C38</color>
+    <color name="colorLighterRed">#E16564</color>
+    <color name="colorDarkRed">#B63A37</color>
+    <color name="colorDarkerRed">#5D2227</color>
+    <color name="colorDarkerRedv2">#421F25</color>
+
+    <color name="colorBlack">#111213</color>
+
+    <color name="colorRedRect">#68282F</color>
+    <color name="colorDarkRedRect">#492128</color>
+
+    <color name="colorBlackA50">#CC000000</color>
+
+
+    <color name="colorLightGreyChat">#B1B1B1</color>
+    <color name="colorLightGreyDate">#9E9E9E</color>
+    <color name="colorLightBlackChatName">#282828</color>
+    <color name="colorTextYellow">#F7EC60</color>
+
+    <color name="redTintDisable">@drawable/selector_text_red_with_disable</color>
+
+
 </resources>

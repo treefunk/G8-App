@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appbg">
+
+
+    <!--<View
+        android:id="@+id/toolbar"
+
+        style="@style/toolbarRed"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/timein_bg"
+
+        />
+
+    <include
+        layout="@layout/back_icon"
+
+        app:layout_constraintLeft_toLeftOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        />
+    
+
+
+    <TextView
+
+        style="@style/toolbarTitle"
+
+        app:layout_constraintLeft_toLeftOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintRight_toRightOf="@id/toolbar"
+
+        android:text="TIME IN/TIME OUT"
+        />
+
+
+    <View
+        android:id="@+id/timein_bg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/timeout_bg"
+        
+        android:background="@color/colorDarkerRed"
+        />
+
+    <TextView
+        android:id="@+id/label_timein"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/timein_bg"
+        app:layout_constraintRight_toRightOf="@id/timein_bg"
+        app:layout_constraintLeft_toLeftOf="@id/timein_bg"
+        app:layout_constraintBottom_toBottomOf="@id/timein_bg"
+
+        android:text="TIME IN"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="@dimen/_22ssp"
+        android:textColor="@android:color/white"
+        />
+
+
+
+
+    <View
+        android:id="@+id/timeout_bg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toRightOf="@id/timein_bg"
+        app:layout_constraintRight_toRightOf="parent"
+
+
+        android:background="@color/colorBlack"
+        />
+
+    <TextView
+        android:id="@+id/label_timeout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/timeout_bg"
+        app:layout_constraintRight_toRightOf="@id/timeout_bg"
+        app:layout_constraintBottom_toBottomOf="@id/timeout_bg"
+        app:layout_constraintLeft_toLeftOf="@id/timeout_bg"
+
+        android:text="TIME OUT"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="@dimen/_22ssp"
+        android:textColor="@color/colorLightGrey"
+        />-->
+
+    <TextView
+        android:id="@+id/label_your_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_location"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+
+        android:layout_marginBottom="@dimen/_5sdp"
+
+
+        android:text="YOUR LOCATION:"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_light"
+        android:textSize="@dimen/_15ssp"
+        android:textColor="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/label_your_location"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_time_in"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginBottom="@dimen/_40sdp"
+
+        android:text="SM MALL OF ASIA"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="@dimen/_25ssp"
+        android:textColor="@android:color/white"
+        />
+
+    <ImageView
+        android:id="@+id/back_time_in"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintLeft_toLeftOf="@id/btn_time_in"
+        app:layout_constraintTop_toTopOf="@id/btn_time_in"
+        app:layout_constraintRight_toRightOf="@id/btn_time_in"
+        app:layout_constraintBottom_toBottomOf="@id/btn_time_in"
+        android:layout_marginTop="@dimen/_10sdp"
+
+        android:background="@drawable/shape_rectangle_light_red_button"
+        />
+
+
+    <Button
+        android:id="@+id/btn_time_in"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_location"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/label_wrong_store_location"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginBottom="@dimen/_29sdp"
+
+        android:background="@drawable/shape_rectangle_red_button"
+        android:text="TIME IN"
+        android:textSize="@dimen/_25ssp"
+        android:fontFamily="@font/roboto_bold"
+        android:enabled="false"
+        android:textColor="@drawable/selector_button_main"
+        />
+
+    <TextView
+        android:id="@+id/label_wrong_store_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/btn_time_in"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_enter_store_information"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+
+        android:layout_marginBottom="@dimen/_10sdp"
+
+        android:text="WRONG STORE/LOCATION?"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_light"
+        android:textSize="@dimen/_12ssp"
+        android:textColor="@android:color/white"
+        />
+
+    <ImageView
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintLeft_toLeftOf="@id/btn_enter_store_information"
+        app:layout_constraintTop_toTopOf="@id/btn_enter_store_information"
+        app:layout_constraintRight_toRightOf="@id/btn_enter_store_information"
+        app:layout_constraintBottom_toBottomOf="@id/btn_enter_store_information"
+        android:layout_marginTop="@dimen/_10sdp"
+
+        android:background="@drawable/shape_rectangle_light_red_button"
+        />
+
+    <Button
+        android:id="@+id/btn_enter_store_information"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_wrong_store_location"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:background="@drawable/shape_rectangle_red_button"
+        android:text="ENTER STORE\n INFORMATION"
+        android:textSize="@dimen/_17ssp"
+        android:fontFamily="@font/roboto_bold"
+        android:enabled="true"
+        android:textColor="@drawable/selector_button_main"
+        />
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

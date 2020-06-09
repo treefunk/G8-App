@@ -1,3 +1,39 @@
 <resources>
-    <string name="app_name">G8-App</string>
+    <string name="app_name">G8</string>
+
+    <string name="label_forgot_password"><u>FORGOT PASSWORD?</u></string>
+
+
+
+    <string name="label_welcome" style="letter-spacing:25px">Welcome, %s!</string>
+    <!-- Dashboard -->
+    <string name="label_timein_timeout">TIME IN/\n TIME OUT</string>
+    <string name="label_pin_your_store">PIN YOUR STORE</string>
+    <string name="label_announcements">ANNOUNCEMENTS\n &amp; MEMOS</string>
+    <string name="label_payslip">PAYSLIP</string>
+    <string name="label_sales_report">SALES REPORT</string>
+    <string name="label_urgent_message_to_admin">URGENT MESSAGE TO ADMIN</string>
+    <string name="label_upload_timeslip">UPLOAD TIMESLIP</string>
+    <string name="label_settings">SETTINGS</string>
+
+
+    <string name="label_turn_on_gps">PLEASE TURN ON  YOUR GPS/LOCATION\n SERVICES FOR ACCURACY</string>
+    <string name="label_payslip_notice">Each payslip will be deleted after a time span of two (2) months.\n However, records of each payslip can be found in the Database.</string>
+
+
+    <string name="label_upload_from_gallery">UPLOAD FROM\nGALLERY</string>
+    <string name="label_take_a_photo">TAKE A\n PHOTO</string>
+
+    <string name="dialog_text_turn_gps">PLEASE\n TURN ON\n YOUR GPS\n BEFORE\n PROCEEDING</string>
+    <string name="label_confirm_with_date">I have read and acknowledged this\n memo/announcement on\n %s</string>
+
+    <plurals name="timein_plural">
+        <item quantity="one">Available Time in: %d </item>
+        <item quantity="other">Available Time ins: %d</item>
+    </plurals>
+
+    <plurals name="label_my_store">
+        <item quantity="one">My Store</item>
+        <item quantity="other">My Stores</item>
+    </plurals>
 </resources>

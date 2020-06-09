@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    >
+
+
+    <View
+        android:id="@+id/white_outline"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_270sdp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:layout_marginRight="@dimen/_50sdp"
+
+        android:background="@drawable/shape_no_border_top_white_outline"
+
+        />
+
+    <View
+
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="0.8dp"
+
+        app:layout_constraintTop_toTopOf="@id/white_outline"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+
+        android:background="@android:color/white"
+
+        />
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="@dimen/_29sdp"
+        android:layout_height="@dimen/_29sdp"
+
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/label_no_nearby"
+        app:layout_constraintLeft_toLeftOf="@id/label_no_nearby"
+        app:layout_constraintRight_toRightOf="@id/label_no_nearby"
+
+        app:layout_constraintVertical_bias="1"
+        android:layout_marginBottom="@dimen/_5sdp"
+
+        android:src="@drawable/img_close"
+        />
+
+    <TextView
+        android:id="@+id/label_no_nearby"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        app:layout_constraintBottom_toTopOf="@id/white_outline"
+
+
+        android:text="THERE'S NO NEARBY STORE!"
+        android:textColor="@color/colorDarkRed"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/_13ssp"
+        />
+
+    <TextView
+        android:id="@+id/label_store_information"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/white_outline"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        app:layout_constraintBottom_toTopOf="@id/label_store_name"
+        app:layout_constraintVertical_bias="0"
+
+        android:layout_marginTop="@dimen/_3sdp"
+
+
+        android:text="ENTER STORE INFORMATION"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="@dimen/_13ssp"
+        />
+
+
+
+
+
+
+    <View
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="0.8dp"
+
+        app:layout_constraintTop_toTopOf="@id/white_outline"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+
+        android:background="@android:color/white"
+
+        />
+
+    <TextView
+        android:id="@+id/label_store_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/white_outline"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+        app:layout_constraintBottom_toTopOf="@id/ac_store_name"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        app:layout_constraintVertical_chainStyle="packed"
+
+        android:layout_marginBottom="@dimen/_5sdp"
+
+        android:text="STORE/MALL/STALL NAME"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        />
+
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/ac_store_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/label_store_name"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+        app:layout_constraintBottom_toTopOf="@id/label_store_address"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        android:theme="@style/AppTheme"
+
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+
+        android:background="@drawable/shape_rectangle_white"
+        android:textColor="@android:color/black"
+        />
+
+    <TextView
+        android:id="@+id/label_store_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/ac_store_name"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        app:layout_constraintBottom_toTopOf="@id/et_store_address"
+
+        android:layout_marginBottom="@dimen/_5sdp"
+
+        android:text="STORE/MALL/STALL ADDRESS"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        />
+
+    <EditText
+        android:id="@+id/et_store_address"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/label_store_address"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        app:layout_constraintBottom_toTopOf="@id/btn_submit"
+
+        android:layout_marginBottom="@dimen/_30sdp"
+
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+
+        android:background="@drawable/shape_rectangle_white"
+        android:textColor="@android:color/black"
+        />
+
+    <ImageView
+        android:id="@+id/back_submit"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintLeft_toLeftOf="@id/btn_submit"
+        app:layout_constraintTop_toTopOf="@id/btn_submit"
+        app:layout_constraintRight_toRightOf="@id/btn_submit"
+        app:layout_constraintBottom_toBottomOf="@id/btn_submit"
+        android:layout_marginTop="@dimen/_10sdp"
+
+        android:background="@drawable/shape_rectangle_light_red_button"
+        />
+
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_50sdp"
+
+        app:layout_constraintTop_toBottomOf="@id/et_store_address"
+        app:layout_constraintRight_toRightOf="@id/white_outline"
+        app:layout_constraintBottom_toBottomOf="@id/white_outline"
+        app:layout_constraintLeft_toLeftOf="@id/white_outline"
+
+
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginRight="@dimen/_25sdp"
+
+        android:background="@drawable/shape_rectangle_red_button"
+        android:text="SUBMIT"
+        android:textSize="@dimen/_20ssp"
+        android:fontFamily="@font/roboto_regular"
+        android:textFontWeight="700"
+        />
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

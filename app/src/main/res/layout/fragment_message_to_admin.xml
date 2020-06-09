@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@drawable/appbg"
+    android:weightSum="12">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10.5"
+
+        tools:listitem="@layout/item_message_from"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:background="@color/colorDarkerRed"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:paddingRight="@dimen/_12sdp"
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.5"
+            android:orientation="vertical"
+            android:weightSum="10"
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:background="@drawable/shape_rectangle_white"
+                style="@style/robotoTextWhiteRegular"
+                android:textColor="@color/colorBlack"
+                android:layout_marginBottom="@dimen/_3sdp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="300 characters left"
+                android:fontFamily="@font/roboto_italic"
+                android:textSize="@dimen/_6ssp"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:layout_marginBottom="@dimen/_9ssp"
+            android:layout_marginLeft="@dimen/_5sdp"
+
+            >
+            <ImageButton
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+
+                android:background="@drawable/shape_round_black"
+                android:src="@drawable/msg_send_icon"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+
+
+                />
+            />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

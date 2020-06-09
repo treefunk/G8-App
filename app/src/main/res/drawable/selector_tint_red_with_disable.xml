@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:tint="@color/colorDarkRed" android:state_enabled="true" />
+    <item android:tint="@color/colorLightGrey" android:state_enabled="false" />
+    <item android:tint="@color/colorDarkRed" />
+</selector>
