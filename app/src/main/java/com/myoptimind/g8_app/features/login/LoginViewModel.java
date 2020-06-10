@@ -107,6 +107,7 @@ public class LoginViewModel extends AndroidViewModel {
                             ));
                         }
 
+                        mStoreRepository.clearUserStores();
                         mStoreRepository.insertUserStore(userStores);
 
                         // Insert announcements

@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.features.announcementpopup.AnnouncementDialogFragment;
+import com.myoptimind.g8_app.features.settings.SettingsActivity;
 import com.myoptimind.g8_app.features.shared.SharedPref;
 import com.myoptimind.g8_app.models.Announcement;
 
@@ -74,6 +75,8 @@ public class DashboardFragment extends Fragment {
         );
 
         dashboardViewModel = new ViewModelProvider(getActivity()).get(DashboardViewModel.class);
+
+        initAnnouncements();
 
 
 
@@ -143,14 +146,13 @@ public class DashboardFragment extends Fragment {
 
 
 
-/*
-        boxUploadTimeSlip.setOnClickListener(new View.OnClickListener() {
+/*        boxUploadTimeSlip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = UploadSlipActivity.newIntent(getActivity());
                 startActivity(intent);
             }
-        });
+        });*/
 
         boxSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,18 +161,9 @@ public class DashboardFragment extends Fragment {
                 startActivity(intent);
             }
         });
-*/
 
 
-        dashboardViewModel.getUnreadAnnouncements().observe(this.getViewLifecycleOwner(), new Observer<List<Announcement>>() {
-            @Override
-            public void onChanged(List<Announcement> announcements) {
-                if(announcements.size() > 0){
-                    AnnouncementDialogFragment announcementDialogFragment = AnnouncementDialogFragment.newInstance(announcements);
-                    announcementDialogFragment.show(getActivity().getSupportFragmentManager(),"ANNOUNCEMENT_DIALOG");
-                }
-            }
-        });
+
 
 
 /*        dashboardViewModel.getUser().observe(this.getViewLifecycleOwner(), new Observer<User>() {
@@ -211,6 +204,18 @@ public class DashboardFragment extends Fragment {
 
 
         return v;
+    }
+
+    private void initAnnouncements() {
+        dashboardViewModel.getUnreadAnnouncements().observe(this.getViewLifecycleOwner(), new Observer<List<Announcement>>() {
+            @Override
+            public void onChanged(List<Announcement> announcements) {
+                if(announcements.size() > 0){
+                    AnnouncementDialogFragment announcementDialogFragment = AnnouncementDialogFragment.newInstance(announcements);
+                    announcementDialogFragment.show(getActivity().getSupportFragmentManager(),"ANNOUNCEMENT_DIALOG");
+                }
+            }
+        });
     }
 
 }

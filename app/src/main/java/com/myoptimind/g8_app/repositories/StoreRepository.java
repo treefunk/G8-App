@@ -12,6 +12,8 @@ import com.myoptimind.g8_app.models.UserStore;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+
 public class StoreRepository {
 
     private StoreDao mStoreDao;
@@ -50,8 +52,17 @@ public class StoreRepository {
         }
     }
 
+
     public void insertUserStore(List<UserStore> userStores){
         mStoreDao.insertUserStore(userStores);
+    }
+
+    public void insertUserStore(UserStore userStores){
+        mStoreDao.insertUserStore(userStores);
+    }
+
+    public void clearUserStores(){
+        mStoreDao.clearStoreOwners();
     }
 
 
