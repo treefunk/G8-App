@@ -35,7 +35,7 @@ public interface AnnouncementDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertAnnouncement(Announcement announcement);
+    Completable insertAnnouncement(Announcement announcement);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAnnouncement(List<Announcement> announcements);

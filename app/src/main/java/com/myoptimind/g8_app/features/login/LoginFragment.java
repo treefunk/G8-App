@@ -18,18 +18,29 @@ import androidx.lifecycle.ViewModelProvider;
 import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.features.dashboard.DashboardFragment;
 import com.myoptimind.g8_app.features.dashboard.MainActivity;
+import com.myoptimind.g8_app.features.shared.SharedPref;
 
 public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
     private View view;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (SharedPref.getInstance(getActivity()).loggedInExists()) {
+            Intent intent = MainActivity.newIntent(getActivity());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        if(view == null){
-            view = inflater.from(getActivity()).inflate(R.layout.fragment_login,container,false);
+        if (view == null) {
+            view = inflater.from(getActivity()).inflate(R.layout.fragment_login, container, false);
         }
 
         initLogin();
@@ -44,7 +55,11 @@ public class LoginFragment extends Fragment {
         Button btnLogin         = view.findViewById(R.id.btn_login);
 
 
+
         final LoginViewModel loginViewModel = new ViewModelProvider(getActivity()).get(LoginViewModel.class);
+
+
+
 
         btnLogin.setOnClickListener(
                 v -> {

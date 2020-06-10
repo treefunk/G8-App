@@ -8,6 +8,8 @@ import androidx.room.Query;
 
 import com.myoptimind.g8_app.models.TimeSlip;
 
+import io.reactivex.Maybe;
+
 @Dao
 public interface TimeSlipDao {
 
@@ -15,7 +17,7 @@ public interface TimeSlipDao {
     LiveData<TimeSlip> getByDate(String userId, String date);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertTimeSlip(TimeSlip timeSlip);
+    Maybe<Long> insertTimeSlip(TimeSlip timeSlip);
 
     @Query("SELECT * FROM timeslip WHERE user_id = :userId AND created_at > :datetime LIMIT 1")
     TimeSlip getByDateSync(String userId, String datetime);

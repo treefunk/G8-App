@@ -22,6 +22,7 @@ import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.features.announcementpopup.AnnouncementDialogFragment;
 import com.myoptimind.g8_app.features.settings.SettingsActivity;
 import com.myoptimind.g8_app.features.shared.SharedPref;
+import com.myoptimind.g8_app.features.uploadtimeslip.UploadSlipActivity;
 import com.myoptimind.g8_app.models.Announcement;
 
 import java.util.List;
@@ -146,13 +147,13 @@ public class DashboardFragment extends Fragment {
 
 
 
-/*        boxUploadTimeSlip.setOnClickListener(new View.OnClickListener() {
+        boxUploadTimeSlip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = UploadSlipActivity.newIntent(getActivity());
                 startActivity(intent);
             }
-        });*/
+        });
 
         boxSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +195,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SharedPref sharedPref = SharedPref.getInstance(getActivity());
-//                dashboardViewModel.clearUser();
+                dashboardViewModel.clearUser();
                 sharedPref.setIdLoggedIn(null);
                 sharedPref.clearLastSyncs();
                 getActivity().finish();

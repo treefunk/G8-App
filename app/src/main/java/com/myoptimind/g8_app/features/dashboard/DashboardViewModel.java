@@ -98,7 +98,24 @@ public class DashboardViewModel extends AndroidViewModel {
     }
 
     public void updateAnnouncement(Announcement announcement){
-        mAnnouncementRepository.insertAnnouncement(announcement);
+        mAnnouncementRepository.insertAnnouncement(announcement)
+        .subscribeOn(Schedulers.io())
+        .subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG,"UPDATED");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
     }
 
     public LiveData<UserAnnouncement> getActiveUserAnnouncement() {

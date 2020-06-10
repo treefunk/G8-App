@@ -16,11 +16,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AnnouncementRepository {
@@ -49,16 +51,8 @@ public class AnnouncementRepository {
 
     // Insert
 
-    public void insertAnnouncement(Announcement announcement){
-        Observable.fromCallable(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                mAnnouncementDao.insertAnnouncement(announcement);
-                return null;
-            }
-        }).subscribeOn(Schedulers.io())
-                .subscribe()
-                .dispose();
+    public Completable insertAnnouncement(Announcement announcement){
+        return mAnnouncementDao.insertAnnouncement(announcement);
     }
 
 
