@@ -55,6 +55,10 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.Bullet
         mClickListener = clickListener;
     }
 
+    public void setAnnouncements(List<Announcement> announcements) {
+        mAnnouncements = announcements;
+    }
+
     @NonNull
     @Override
     public BulletinHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -52,6 +52,10 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoHolder> {
         mClickListener = clickListener;
     }
 
+    public void setMemos(List<Announcement> memos) {
+        mMemos = memos;
+    }
+
     @Override
     public int getItemViewType(int position) {
 //        switch(mMemos.get(position).getId() == 1){

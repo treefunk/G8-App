@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.models.Announcement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BulletinFragment extends Fragment {
@@ -43,23 +44,26 @@ public class BulletinFragment extends Fragment {
 
         rvBulletin.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
+        BulletinAdapter bulletinAdapter = new BulletinAdapter(new ArrayList<>(), new BulletinAdapter.ClickListener() {
+            @Override
+            public void onClickItem(Announcement announcement, int position) {
+                Intent intent = SingleBulletinActivity.newIntent(
+                        getActivity(),
+                        announcement.getTitle(),
+                        announcement.getCreatedAt(),
+                        announcement.getContent(),
+                        announcement.getFeaturedImage()
+                );
+                startActivity(intent);
+            }
+        });
+
+        rvBulletin.setAdapter(bulletinAdapter);
+
         bulletinViewModel.getBulletins().observe(this.getViewLifecycleOwner(), new Observer<List<Announcement>>() {
             @Override
             public void onChanged(List<Announcement> announcements) {
-                final BulletinAdapter bulletinAdapter = new BulletinAdapter(announcements, new BulletinAdapter.ClickListener() {
-                    @Override
-                    public void onClickItem(Announcement announcement, int position) {
-                        Intent intent = SingleBulletinActivity.newIntent(
-                                getActivity(),
-                                announcement.getTitle(),
-                                announcement.getCreatedAt(),
-                                announcement.getContent(),
-                                announcement.getFeaturedImage()
-                        );
-                        startActivity(intent);
-                    }
-                });
-                rvBulletin.setAdapter(bulletinAdapter);
+                bulletinAdapter.setAnnouncements(announcements);
                 bulletinAdapter.notifyDataSetChanged();
             }
         });
