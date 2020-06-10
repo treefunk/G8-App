@@ -49,6 +49,16 @@ public class AnnouncementRepository {
         return mAnnouncementDao.getUserAnnouncement(userId,announcementId);
     }
 
+    public LiveData<List<Announcement>> getAllBulletins(){
+        return mAnnouncementDao.getAllBulletin();
+    }
+
+    public LiveData<List<Announcement>> getAllMemo(){
+        return mAnnouncementDao.getAllMemo();
+    }
+
+
+
     // Insert
 
     public Completable insertAnnouncement(Announcement announcement){

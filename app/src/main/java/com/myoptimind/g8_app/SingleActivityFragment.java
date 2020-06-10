@@ -29,7 +29,7 @@ public abstract class SingleActivityFragment extends AppCompatActivity {
         if(fragment == null){
             fragment = createFragment();
 
-            fragmentManager.beginTransaction().add(R.id.fragment_container,fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit();
         }
 
         final ActionBar abar = getSupportActionBar();

@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.features.announcementpopup.AnnouncementDialogFragment;
+import com.myoptimind.g8_app.features.announcementsmemos.AnnouncementsActivity;
 import com.myoptimind.g8_app.features.settings.SettingsActivity;
 import com.myoptimind.g8_app.features.shared.SharedPref;
 import com.myoptimind.g8_app.features.uploadtimeslip.UploadSlipActivity;
@@ -89,13 +90,13 @@ public class DashboardFragment extends Fragment {
             }
         });*/
 
-/*        boxAnnouncements.setOnClickListener(new View.OnClickListener() {
+        boxAnnouncements.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = AnnouncementsActivity.newIntent(getActivity());
                 startActivity(intent);
             }
-        });*/
+        });
 
 
 /*        dashboardViewModel.getStoresOfUser().observe(this.getViewLifecycleOwner(), new Observer<List<Store>>() {

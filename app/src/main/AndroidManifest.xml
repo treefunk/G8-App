@@ -41,6 +41,20 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".features.announcementsmemos.AnnouncementsActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".features.dashboard.MainActivity"
+            android:label="ANNOUNCEMENTS"
+            >
+        </activity>
+
+        <activity android:name=".features.announcementsmemos.bulletin.SingleBulletinActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".features.announcementsmemos.AnnouncementsActivity"
+            android:label="BULLETIN"
+            >
+        </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
