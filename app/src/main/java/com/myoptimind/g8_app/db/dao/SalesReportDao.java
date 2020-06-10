@@ -10,17 +10,22 @@ import com.myoptimind.g8_app.models.SalesReport;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+
 @Dao
 public interface SalesReportDao {
 
     @Query("SELECT * FROM sales_report WHERE user_id = :userId AND datetime LIKE :datetime AND store_uuid = :storeUuid ")
-    SalesReport getByDate(String userId, String datetime, String storeUuid);
+    SalesReport getByDate(String userId, String datetime,String storeUuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertSalesReport(SalesReport salesReport);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertSalesReportList(List<SalesReport> salesReports);
+    Completable insertSalesReportList(List<SalesReport> salesReports);
 
     @Query("SELECT * FROM sales_report WHERE user_id = :userId AND store_uuid = :storeUuid AND has_synced = 0 AND created_at > :datetime OR updated_at > :datetime ORDER BY created_at,updated_at LIMIT 1")
     SalesReport getByDateSync(String userId, String datetime, String storeUuid);
@@ -29,6 +34,6 @@ public interface SalesReportDao {
     SalesReport getFirstCreated(String userId, String storeUuid);
 
     @Delete
-    int removeSalesReport(SalesReport salesReport);
+    Completable removeSalesReport(SalesReport salesReport);
 
 }

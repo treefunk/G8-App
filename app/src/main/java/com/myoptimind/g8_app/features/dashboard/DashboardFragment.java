@@ -21,16 +21,19 @@ import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.features.announcementpopup.AnnouncementDialogFragment;
 import com.myoptimind.g8_app.features.announcementsmemos.AnnouncementsActivity;
+import com.myoptimind.g8_app.features.salesreport.SalesReportActivity;
 import com.myoptimind.g8_app.features.settings.SettingsActivity;
 import com.myoptimind.g8_app.features.shared.SharedPref;
 import com.myoptimind.g8_app.features.uploadtimeslip.UploadSlipActivity;
 import com.myoptimind.g8_app.models.Announcement;
+import com.myoptimind.g8_app.models.Store;
 
 import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
+    private String selectedStore = "";
 
     public static DashboardFragment newInstance() {
 
@@ -99,7 +102,7 @@ public class DashboardFragment extends Fragment {
         });
 
 
-/*        dashboardViewModel.getStoresOfUser().observe(this.getViewLifecycleOwner(), new Observer<List<Store>>() {
+        dashboardViewModel.getStoresOfUser().observe(this.getViewLifecycleOwner(), new Observer<List<Store>>() {
             @Override
             public void onChanged(final List<Store> stores) {
                 if(stores.size() > 0){
@@ -142,7 +145,7 @@ public class DashboardFragment extends Fragment {
 
                 }
             }
-        });*/
+        });
 
 
 
