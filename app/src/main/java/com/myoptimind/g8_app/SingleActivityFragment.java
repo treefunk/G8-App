@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-abstract class SingleActivityFragment extends AppCompatActivity {
+public abstract class SingleActivityFragment extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
     protected abstract String setLabel();
