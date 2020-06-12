@@ -1,4 +1,4 @@
-package com.myoptimind.g8_app;
+package com.myoptimind.g8_app.features.shared;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.List;
+import com.myoptimind.g8_app.R;
 
 public class TabbedFragment extends Fragment {
 
@@ -42,9 +40,12 @@ public class TabbedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_two_tab_pager,container,false);
 
         ViewPager2 mViewPager = view.findViewById(R.id.vp_main);
+        mViewPager.setOffscreenPageLimit(2);
+
 
         mViewPager.setAdapter(stateAdapter);
 

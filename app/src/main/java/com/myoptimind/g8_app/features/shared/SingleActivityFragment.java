@@ -1,4 +1,4 @@
-package com.myoptimind.g8_app;
+package com.myoptimind.g8_app.features.shared;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,6 +10,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.myoptimind.g8_app.R;
 
 public abstract class SingleActivityFragment extends AppCompatActivity {
 

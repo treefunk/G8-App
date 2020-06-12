@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import com.myoptimind.g8_app.SingleActivityFragment;
+import com.myoptimind.g8_app.features.shared.SingleActivityFragment;
 
 public class SingleBulletinActivity extends SingleActivityFragment {
 

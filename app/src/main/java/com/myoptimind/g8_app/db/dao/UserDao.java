@@ -28,10 +28,10 @@ public interface UserDao {
     LiveData<User> getUserLive();
 
     @Query("SELECT * FROM User LIMIT 1")
-    User getUser();
+    Single<User> getUser();
 
     @Query("DELETE FROM User WHERE id > 0")
-    void clearUsers();
+    Completable clearUsers();
 
 
 }

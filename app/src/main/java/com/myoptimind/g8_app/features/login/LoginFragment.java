@@ -82,6 +82,10 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getActivity(),s,Toast.LENGTH_LONG).show();
         });
 
+        loginViewModel.getIsRequesting().observe(getViewLifecycleOwner(), isRequesting -> {
+            btnLogin.setEnabled(!isRequesting);
+        });
+
 
     }
 }

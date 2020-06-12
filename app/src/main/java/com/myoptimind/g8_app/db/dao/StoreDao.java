@@ -11,14 +11,20 @@ import com.myoptimind.g8_app.models.UserStore;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Maybe;
+
 @Dao
 public interface StoreDao {
 
     @Query("SELECT * FROM store")
-    LiveData<List<Store>> getAll();
+    LiveData<List<Store>> getAllLive();
+
+    @Query("SELECT * FROM store")
+    Maybe<List<Store>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insertStore(Store store);
+    Completable insertStore(Store store);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertStoreList(List<Store> stores);
@@ -36,7 +42,10 @@ public interface StoreDao {
     Integer getCountByStoreName(String storeName);
 
     @Query("SELECT store.* FROM store INNER JOIN user_store on store.uuid = user_store.store_uuid WHERE user_store.user_id = :userId")
-    LiveData<List<Store>> getUserStores(String userId);
+    LiveData<List<Store>> getUserStoresLive(String userId);
+
+    @Query("SELECT store.* FROM store INNER JOIN user_store on store.uuid = user_store.store_uuid WHERE user_store.user_id = :userId")
+    Maybe<List<Store>> getUserStores(String userId);
 
     @Query("SELECT * FROM store WHERE user_id = :userId")
     List<Store> getStoresCreatedByUser(String userId);
@@ -51,7 +60,9 @@ public interface StoreDao {
     int clearStoreOwners();
 
     @Query("SELECT * FROM store WHERE store_name = :storeName")
-    Store getStoreByName(String storeName);
+    Maybe<Store> getStoreByName(String storeName);
+
+
 
 
 

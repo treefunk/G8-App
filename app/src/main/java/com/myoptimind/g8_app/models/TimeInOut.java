@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "time_in_out")
 public class TimeInOut extends AppGeneratedEntity {
 
+    public static final String TYPE_TIMEIN = "1";
+    public static final String TYPE_TIMEOUT = "2";
+
 
     @SerializedName("user_id")
     @ColumnInfo(name = "user_id")
@@ -42,5 +45,13 @@ public class TimeInOut extends AppGeneratedEntity {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Boolean isTimingIn(){
+        return String.valueOf(type).equals(TYPE_TIMEIN);
+    }
+
+    public Boolean isTimingOut(){
+        return String.valueOf(type).equals(TYPE_TIMEOUT);
     }
 }

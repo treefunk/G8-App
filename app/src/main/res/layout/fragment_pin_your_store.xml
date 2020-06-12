@@ -222,7 +222,7 @@
         android:background="@drawable/shape_rectangle_red_button"
         android:text="SUBMIT"
         android:textSize="@dimen/_25ssp"
-        android:textColor="@android:color/white"
+        android:textColor="@drawable/selector_button_main"
         android:fontFamily="@font/roboto_bold"
         />
 

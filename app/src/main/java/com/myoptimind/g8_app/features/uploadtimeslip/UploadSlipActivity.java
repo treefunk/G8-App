@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 
-import com.myoptimind.g8_app.SingleActivityFragment;
+import com.myoptimind.g8_app.features.shared.SingleActivityFragment;
 
 public class UploadSlipActivity extends SingleActivityFragment {
 

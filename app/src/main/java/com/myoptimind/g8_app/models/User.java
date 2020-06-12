@@ -97,5 +97,27 @@ public class User extends BaseEntity {
     public String getFullname(){
         return firstName + " " + lastName;
     }
+
+    public Boolean isPromodiser(){
+        return getPosition() == USER_TYPE_PROMODISER;
+    }
+
+    public Boolean isCoordinator(){
+        return getPosition() == USER_TYPE_COORDINATOR;
+    }
+
+    public int getTimeInLimit(){
+        switch(getPosition()){
+            case User.USER_TYPE_COORDINATOR: {
+                return 3;
+            }
+            case User.USER_TYPE_PROMODISER: {
+                return -1; // -1 for unlimited time ins outs
+            }
+            default: {
+                return  1;
+            }
+        }
+    }
 }
 

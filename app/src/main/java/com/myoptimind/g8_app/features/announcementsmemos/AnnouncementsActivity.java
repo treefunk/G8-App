@@ -7,14 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.myoptimind.g8_app.SingleActivityFragment;
-import com.myoptimind.g8_app.SingleTab;
-import com.myoptimind.g8_app.TabbedFragment;
+import com.myoptimind.g8_app.features.shared.SingleActivityFragment;
+import com.myoptimind.g8_app.features.shared.TabbedFragment;
 import com.myoptimind.g8_app.features.announcementsmemos.bulletin.BulletinFragment;
 import com.myoptimind.g8_app.features.announcementsmemos.memos.MemoFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AnnouncementsActivity extends SingleActivityFragment {
 

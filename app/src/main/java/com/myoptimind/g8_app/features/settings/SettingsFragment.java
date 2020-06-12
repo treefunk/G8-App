@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.features.dashboard.DashboardViewModel;
+import com.myoptimind.g8_app.features.dashboard.MainActivity;
 import com.myoptimind.g8_app.features.login.LoginActivity;
 import com.myoptimind.g8_app.features.shared.SharedPref;
 import com.myoptimind.g8_app.models.Store;
@@ -53,7 +54,7 @@ public class SettingsFragment extends Fragment {
         ImageView imgStore = view.findViewById(R.id.img_store);
 
 
-        SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        SettingsViewModel settingsViewModel = new ViewModelProvider(getActivity()).get(SettingsViewModel.class);
 
 
         settingsViewModel.getUser().observe(this.getViewLifecycleOwner(), new Observer<User>() {

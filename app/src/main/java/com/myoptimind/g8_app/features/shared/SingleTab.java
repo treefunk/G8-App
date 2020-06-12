@@ -1,4 +1,4 @@
-package com.myoptimind.g8_app;
+package com.myoptimind.g8_app.features.shared;
 
 import androidx.fragment.app.Fragment;
 

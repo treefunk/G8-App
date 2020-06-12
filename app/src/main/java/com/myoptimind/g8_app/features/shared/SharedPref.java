@@ -12,6 +12,7 @@ public class SharedPref {
     public static final String LAST_SYNC_TIMESLIP      = "last_sync_timeslip";
     public static final String LAST_SYNC_ANNOUNCEMENTS = "last_sync_announcements";
     public static final String LAST_SYNC_TIMEINOUT     = "last_sync_timeinout";
+    public static final String LAST_LOGIN_ELAPSED      = "last_login_elapsed";
 
     public static SharedPreferences mSharedPreferences;
     public static SharedPref INSTANCE;

@@ -18,7 +18,33 @@ public class Utils {
                                      double x2,
                                      double y2){
 
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        return Math.sqrt(
+                Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)
+        );
+    }
+
+    public static double rad(double x){
+        return x * Math.PI / 180;
+    }
+
+
+
+    public static double getDistancev2(
+            double aX,
+            double aY,
+            double bX,
+            double bY
+    ){
+        int meanRadius = 6378137; // Earth’s mean radius in meter
+        double dLat = rad(bX - aX);
+        double dLong = rad(bY - aY);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(rad(aX)) * Math.cos(rad(bX)) *
+                        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = meanRadius * c;
+        d = d / 1000; // in km
+        return d;
     }
 
 
@@ -42,6 +68,9 @@ public class Utils {
     public static void setEnableViews(View[] views, Boolean enable){
         for(View view : views) {
             view.setEnabled(enable);
+            if(!enable){
+                view.setOnClickListener(null);
+            }
         }
     }
 

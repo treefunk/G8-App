@@ -4,6 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!-- Required only when requesting background location access on
+     Android 10 (API level 29). -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
 
@@ -27,6 +34,7 @@
         </activity>
 
         <activity android:name=".features.dashboard.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
 
         </activity>
@@ -34,6 +42,14 @@
         <activity android:name=".features.settings.SettingsActivity"
             android:parentActivityName=".features.dashboard.MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".features.pinyourstore.PinYourStoreActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".features.dashboard.MainActivity"
+            android:label="PIN YOUR STORE"
+            android:windowSoftInputMode="adjustPan"
+            >
         </activity>
 
         <activity android:name=".features.uploadtimeslip.UploadSlipActivity"
@@ -53,6 +69,13 @@
             android:parentActivityName=".features.announcementsmemos.AnnouncementsActivity"
             android:label="BULLETIN"
             >
+        </activity>
+
+        <activity android:name=".features.timeinout.TimeInOutActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".features.dashboard.MainActivity"
+            android:windowSoftInputMode="adjustPan">
+
         </activity>
 
         <activity android:name=".features.salesreport.SalesReportActivity"

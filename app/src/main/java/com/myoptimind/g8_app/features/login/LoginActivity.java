@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.facebook.stetho.Stetho;
 import com.myoptimind.g8_app.R;
-import com.myoptimind.g8_app.SingleActivityFragment;
+import com.myoptimind.g8_app.features.shared.SingleActivityFragment;
 
 public class LoginActivity extends SingleActivityFragment {
 

@@ -32,24 +32,23 @@ public class UserRepository {
      * Database Requests
      */
 
-    public Long insertUser(User user){
-        return mUserDao.insertUser(user);
-    }
+    //fetch
 
     public LiveData<User> getUserLivedata() {
         return mUserDao.getUserLive();
     }
 
-    public void clearUser() {
-        Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                mUserDao.clearUsers();
-                return true;
-            }
-        }).subscribeOn(Schedulers.io())
-                .subscribe()
-                .dispose();
+    public Single<User> getUser(){ return mUserDao.getUser(); }
+
+    //insert
+    public Long insertUser(User user){
+        return mUserDao.insertUser(user);
+    }
+
+
+    //delete
+    public Completable clearUser() {
+        return mUserDao.clearUsers();
     }
 
 

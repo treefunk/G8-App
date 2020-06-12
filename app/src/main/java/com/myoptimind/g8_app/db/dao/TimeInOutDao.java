@@ -10,17 +10,24 @@ import com.myoptimind.g8_app.models.TimeInOut;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+
 @Dao
 public interface TimeInOutDao {
 
     @Query("SELECT COUNT(*) FROM time_in_out WHERE user_id = :userId AND created_at LIKE :datetime AND type = :type")
-    LiveData<Integer> getByDateTimeIns(String userId, String datetime, String type);
+    Single<Integer> getByDateTimeIns(String userId, String datetime, String type);
 
     @Query("SELECT * FROM time_in_out WHERE user_id = :userId AND created_at LIKE :datetime AND type = :type")
     LiveData<TimeInOut> getByDate(String userId, String datetime, String type);
 
+    @Query("SELECT * FROM time_in_out WHERE user_id = :userId AND created_at LIKE :datetime AND type = :type")
+    Maybe<TimeInOut> getByDate_(String userId, String datetime, String type);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Long insertTimeInOut(TimeInOut timeInOut);
+    Completable insertTimeInOut(TimeInOut timeInOut);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTimeInOutList(List<TimeInOut> timeInOuts);

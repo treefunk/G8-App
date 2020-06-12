@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.myoptimind.g8_app.SingleActivityFragment;
-import com.myoptimind.g8_app.TabbedFragment;
+import com.myoptimind.g8_app.features.shared.SingleActivityFragment;
+import com.myoptimind.g8_app.features.shared.TabbedFragment;
 
 public class SalesReportActivity extends SingleActivityFragment {
 

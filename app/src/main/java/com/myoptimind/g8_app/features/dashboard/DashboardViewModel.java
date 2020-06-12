@@ -20,11 +20,10 @@ import com.myoptimind.g8_app.repositories.StoreRepository;
 import com.myoptimind.g8_app.repositories.UserRepository;
 
 import java.util.List;
-import java.util.concurrent.Callable;
+
 
 import io.reactivex.CompletableObserver;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -50,6 +49,7 @@ public class DashboardViewModel extends AndroidViewModel {
     private StoreRepository mStoreRepository;
 
     private MutableLiveData<String> mActiveAnnouncementId;
+    private int num = 0;
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
@@ -73,9 +73,11 @@ public class DashboardViewModel extends AndroidViewModel {
                 mUnreadAnnouncements.removeSource(mUnread);
             }
         });
+        Log.d(TAG,"NUM = " + num);
+        num++;
 
         mUser = mUserRepository.getUserLivedata();
-        mStoresOfUser = mStoreRepository.getStoresOfUser(loggedInId);
+        mStoresOfUser = mStoreRepository.getStoresOfUserLive(loggedInId);
     }
 
     public void setActiveAnnouncementId(String activeAnnouncementId) {
@@ -118,6 +120,8 @@ public class DashboardViewModel extends AndroidViewModel {
         });
     }
 
+
+
     public LiveData<UserAnnouncement> getActiveUserAnnouncement() {
         return mActiveUserAnnouncement;
     }
@@ -125,7 +129,16 @@ public class DashboardViewModel extends AndroidViewModel {
 
 
     public void clearUser() {
-        mUserRepository.clearUser();
+        mDisposable.add(
+                mUserRepository.clearUser()
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                Log.d(TAG, "successfully deleted");
+                            }
+                        })
+        );
     }
 
     public void insertUserAnnouncement(String announcementId) {
@@ -155,6 +168,7 @@ public class DashboardViewModel extends AndroidViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
                     }
 
                     @Override
@@ -189,5 +203,6 @@ public class DashboardViewModel extends AndroidViewModel {
     protected void onCleared() {
         super.onCleared();
         mDisposable.clear();
+        Log.d(TAG,"viewmodel cleared");
     }
 }

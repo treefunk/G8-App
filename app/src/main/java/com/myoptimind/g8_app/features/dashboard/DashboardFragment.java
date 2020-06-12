@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +22,21 @@ import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.features.announcementpopup.AnnouncementDialogFragment;
 import com.myoptimind.g8_app.features.announcementsmemos.AnnouncementsActivity;
+import com.myoptimind.g8_app.features.pinyourstore.PinYourStoreActivity;
 import com.myoptimind.g8_app.features.salesreport.SalesReportActivity;
 import com.myoptimind.g8_app.features.settings.SettingsActivity;
 import com.myoptimind.g8_app.features.shared.SharedPref;
+import com.myoptimind.g8_app.features.timeinout.TimeInOutActivity;
 import com.myoptimind.g8_app.features.uploadtimeslip.UploadSlipActivity;
 import com.myoptimind.g8_app.models.Announcement;
 import com.myoptimind.g8_app.models.Store;
+import com.myoptimind.g8_app.models.User;
 
 import java.util.List;
 
 public class DashboardFragment extends Fragment {
+
+    private static final String TAG = "DashboardFragment";
 
     private DashboardViewModel dashboardViewModel;
     private String selectedStore = "";
@@ -79,19 +85,20 @@ public class DashboardFragment extends Fragment {
                 false
         );
 
+
         dashboardViewModel = new ViewModelProvider(getActivity()).get(DashboardViewModel.class);
 
         initAnnouncements();
 
 
 
-/*        boxTimeIn.setOnClickListener(new View.OnClickListener() {
+        boxTimeIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = InOutActivity.newIntent(getActivity());
+                Intent intent = TimeInOutActivity.newIntent(getActivity());
                 startActivity(intent);
             }
-        });*/
+        });
 
         boxAnnouncements.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,21 +178,13 @@ public class DashboardFragment extends Fragment {
 
 
 
-/*        dashboardViewModel.getUser().observe(this.getViewLifecycleOwner(), new Observer<User>() {
+        dashboardViewModel.getUser().observe(this.getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 if(user != null){
                     tvWelcome.setText(getString(R.string.label_welcome,user.getFirstName()));
 
-                    if(user.getPosition() == User.USER_TYPE_COORDINATOR){
-                        boxPinYourStore.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = PinYourStoreActivity.newIntent(getActivity());
-                                startActivity(intent);
-                            }
-                        });
-                    }else{
+                    if(user.isCoordinator()){
                         Utils.setEnableViews(
                                 new View[]{ ivPinYourStore,lblPinYourStore },
                                 false
@@ -193,7 +192,15 @@ public class DashboardFragment extends Fragment {
                     }
                 }
             }
-        });*/
+        });
+
+        boxPinYourStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = PinYourStoreActivity.newIntent(getActivity());
+                startActivity(intent);
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,4 +230,9 @@ public class DashboardFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"ondestroy");
+    }
 }

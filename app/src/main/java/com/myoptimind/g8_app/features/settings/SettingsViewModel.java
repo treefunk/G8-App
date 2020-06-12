@@ -33,7 +33,7 @@ public class SettingsViewModel extends AndroidViewModel
         mLoggedInId = SharedPref.getInstance(application).getIdLoggedIn();
 
         mUser   = mUserRepository.getUserLivedata();
-        mStores = mStoreRepository.getStoresOfUser(mLoggedInId);
+        mStores = mStoreRepository.getStoresOfUserLive(mLoggedInId);
     }
 
     public LiveData<User> getUser() {

@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.myoptimind.g8_app.api.ErrorResponse;
 import com.myoptimind.g8_app.api.G8Api;
@@ -29,6 +30,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -47,6 +49,7 @@ public class LoginViewModel extends AndroidViewModel {
     private StoreRepository mStoreRepository;
     private AnnouncementRepository mAnnouncementRepository;
 
+    private MutableLiveData<Boolean> isRequesting = new MutableLiveData<>();
     private SingleLiveEvent<AuthService.AuthResponse> mAuthResponse = new SingleLiveEvent<>();
     private SingleLiveEvent<String> mErrorString                    = new SingleLiveEvent<>();
 
@@ -56,6 +59,7 @@ public class LoginViewModel extends AndroidViewModel {
         mStoreRepository        = new StoreRepository(application);
         mAnnouncementRepository = new AnnouncementRepository(application);
         sharedPref              = SharedPref.getInstance(application);
+        isRequesting.setValue(false);
     }
 
     /**
@@ -65,6 +69,7 @@ public class LoginViewModel extends AndroidViewModel {
             String employeeNumber,
             String password
     ){
+        isRequesting.setValue(true);
         mDisposable.add(mUserRepository.authenticateUser(employeeNumber,password)
                 .toObservable()
                 .doOnNext(new Consumer<AuthService.AuthResponse>() {
@@ -121,10 +126,18 @@ public class LoginViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(authResponse -> {
                     mAuthResponse.setValue(authResponse);
+                    isRequesting.setValue(false);
                 }, throwable -> {
-                    HttpException e = (HttpException) throwable;
-                    ErrorResponse errorResponse = G8Api.getConverter().convert(e.response().errorBody());
-                    mErrorString.setValue(errorResponse.getMeta().getMessage());
+                    try {
+                        HttpException e = (HttpException) throwable;
+                        ErrorResponse errorResponse = G8Api.getConverter().convert(e.response().errorBody());
+                        mErrorString.setValue(errorResponse.getMeta().getMessage());
+                        isRequesting.setValue(false);
+                    } catch (ClassCastException e) {
+                        mErrorString.setValue("No Internet Connection. Please try again.");
+                        isRequesting.setValue(false);
+                    }
+
                 })
         );
     }
@@ -135,5 +148,9 @@ public class LoginViewModel extends AndroidViewModel {
 
     public LiveData<String> getErrorString() {
         return mErrorString;
+    }
+
+    public LiveData<Boolean> getIsRequesting() {
+        return isRequesting;
     }
 }
