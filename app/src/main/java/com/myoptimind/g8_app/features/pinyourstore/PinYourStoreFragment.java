@@ -97,10 +97,6 @@ public class PinYourStoreFragment extends LocationAwareFragment {
             }
         });
 
-        Syncer.getInstance(getActivity().getApplicationContext()).getNum().observe(getViewLifecycleOwner(), m -> {
-            Toast.makeText(getActivity(),m,Toast.LENGTH_SHORT).show();
-        });
-
         return v;
 
     }

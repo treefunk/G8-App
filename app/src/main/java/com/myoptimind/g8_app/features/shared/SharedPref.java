@@ -62,6 +62,8 @@ public class SharedPref {
         return mSharedPreferences.contains(LOGGED_IN);
     }
 
+    public Boolean timeInOutExists() { return mSharedPreferences.contains(LAST_SYNC_TIMEINOUT); }
+
     public String getValueByKey(String key){
         return mSharedPreferences.getString(key,"");
     }

@@ -30,12 +30,12 @@ public interface TimeInOutDao {
     Completable insertTimeInOut(TimeInOut timeInOut);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTimeInOutList(List<TimeInOut> timeInOuts);
+    Completable insertTimeInOutList(List<TimeInOut> timeInOuts);
 
     @Query("SELECT * FROM time_in_out WHERE user_id = :userId AND created_at > :datetime LIMIT 1")
-    TimeInOut getByDateSync(String userId,String datetime);
+    Single<TimeInOut> getByDateSync(String userId,String datetime);
 
     @Query("SELECT * FROM time_in_out WHERE user_id = :userId ORDER BY created_at LIMIT 1")
-    TimeInOut getFirstCreated(String userId);
+    Single<TimeInOut> getFirstCreated(String userId);
 
 }

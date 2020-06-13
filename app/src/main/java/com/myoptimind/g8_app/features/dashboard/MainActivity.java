@@ -39,6 +39,8 @@ public class MainActivity extends SingleActivityFragment {
         WorkManager.getInstance(getApplicationContext()).enqueue(periodicWorkRequest);
         WorkManager.getInstance(getApplicationContext()).enqueue(periodicWorkRequestb);*/
 
+        Syncer.getInstance(getApplicationContext()).start();
+
     }
 
     @Override
@@ -65,6 +67,7 @@ public class MainActivity extends SingleActivityFragment {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Syncer.getInstance(getApplicationContext()).clearDisposables();
     }
 
     @Override
@@ -75,7 +78,6 @@ public class MainActivity extends SingleActivityFragment {
     @Override
     protected void onResume() {
         super.onResume();
-        Syncer.getInstance(getApplicationContext()).start();
     }
 
     @Override
@@ -87,7 +89,6 @@ public class MainActivity extends SingleActivityFragment {
     protected void onStop() {
         super.onStop();
         Log.d(TAG,"onstop");
-        Syncer.getInstance(getApplicationContext()).clearDisposables();
 
     }
 }

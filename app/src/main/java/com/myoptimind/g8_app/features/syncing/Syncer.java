@@ -2,39 +2,39 @@ package com.myoptimind.g8_app.features.syncing;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.MalformedJsonException;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.EmptyResultSetException;
 
 import com.myoptimind.g8_app.Utils;
-import com.myoptimind.g8_app.api.ErrorResponse;
 import com.myoptimind.g8_app.api.G8Api;
 import com.myoptimind.g8_app.features.shared.SharedPref;
 import com.myoptimind.g8_app.features.syncing.response.LastPushDateResponse;
 import com.myoptimind.g8_app.features.syncing.response.PaginationResponse;
+import com.myoptimind.g8_app.features.syncing.response.PushStoreResponse;
+import com.myoptimind.g8_app.features.syncing.response.PushTimeInResponse;
 import com.myoptimind.g8_app.models.Store;
+import com.myoptimind.g8_app.models.TimeInOut;
 import com.myoptimind.g8_app.repositories.StoreRepository;
+import com.myoptimind.g8_app.repositories.TimeInOutRepository;
 import com.myoptimind.g8_app.repositories.UserRepository;
 
-import org.reactivestreams.Publisher;
+import org.joda.time.DateTime;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.SingleSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 
 public class Syncer {
 
     private static final String TAG = "Syncer";
     private static final String TAG_STORE = TAG + "/stores";
+    private static final String TAG_TIMEIN = TAG + "/timeinout";
+
+    private static final String EMPTY_DATE = "0000-00-00 00:00:00";
 
     private static Syncer INSTANCE;
 
@@ -43,17 +43,20 @@ public class Syncer {
     private Context mContext;
     private UserRepository mUserRepository;
     private StoreRepository mStoreRepository;
+    private TimeInOutRepository mTimeInOutRepository;
     private SharedPref mSharedPref;
-    private Boolean isPulling = false;
     private String loggedInId;
+    private SyncService syncService;
 
 
     public Syncer(Context context) {
         mContext = context;
         mUserRepository = new UserRepository(context);
         mStoreRepository = new StoreRepository(context);
+        mTimeInOutRepository = new TimeInOutRepository(context);
         mSharedPref = SharedPref.getInstance(context);
         loggedInId = mSharedPref.getIdLoggedIn();
+        syncService = G8Api.createSyncService();
     }
 
     public static Syncer getInstance(final Context context) {
@@ -70,20 +73,39 @@ public class Syncer {
 
 
     public void start() {
-        if(!isPulling){
-            pullStores(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_STORE),0,1);
-        }
-
-//        Log.d(TAG,getLastPushDate("store"););
-        getLastPushDate("store");
-
-
+        // Sync every 2 minutes
+        Observable.interval(5, TimeUnit.MINUTES)
+                .startWith(10L)
+                .doOnNext(n -> {
+                        mDisposable.clear();
+                        sync();
+                })
+                .subscribe();
     }
 
+    public void sync(){
+        Log.d(TAG,"syncing..");
+        // SYNC STORES
+        pullStores(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_STORE),0,1000);
+        pushStores();
+        // SYNC TIME IN TIME OUT
+        String d;
+        if(!mSharedPref.timeInOutExists()){
+            d = new DateTime().withTime(0,0,0,0).minusDays(1).toString("yyyy-MM-dd HH:mm:ss");
+        }else{
+            d = Utils.parseSQLDate(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_TIMEINOUT)).toString("yyyy-MM-dd HH:mm:ss");
+        }
+        pullTimeIns(d);
+        pushTimeIns();
+    }
+
+    /**
+     * Fetch stores from server
+     */
     // TODO API REUPLOAD PRESETS OF STORES ADD 10 SEC TO CREATED AT
     public void pullStores(final String startDate, int offset, int limit){
         Log.d(TAG_STORE,"Retrieving stores online..");
-        isPulling = true;
+
         String off = String.valueOf(offset);
         String lim  = String.valueOf(limit);
 
@@ -96,15 +118,16 @@ public class Syncer {
                             .subscribe();
                     PaginationResponse paginationResponse = pullStoreResponse.pagination;
                     int pullStoreOffset = paginationResponse.getOffset() + paginationResponse.getLimit() + 1;
-                    Log.d(TAG,"offset - " +paginationResponse.getOffset() + " count - " +paginationResponse.totalCount);
                     if (pullStoreOffset < paginationResponse.getTotalCount()) {
+                        Log.d(TAG,"fetching stores: " +paginationResponse.getOffset() + "/" +paginationResponse.totalCount);
                         pullStores(startDate, pullStoreOffset, paginationResponse.limit);
+                    }else{
+                        Log.d(TAG, "Store list is up to date.");
                     }
                     if(paginationResponse.getTotalCount() > 0){
                         Store lastStore = pullStoreResponse.getData().get(pullStoreResponse.getData().size() - 1);
                         String latestUpdateDate;
-                        num.postValue(pullStoreResponse.pagination.getOffset() + pullStoreResponse.pagination.getLimit() + 1 +"/" + pullStoreResponse.pagination.totalCount);
-                        if(lastStore.getUpdatedAt().equals("0000-00-00 00:00:00")){
+                        if(lastStore.getUpdatedAt().equals(EMPTY_DATE)){
                             latestUpdateDate = lastStore.getCreatedAt();
                         }else{
                             latestUpdateDate = lastStore.getUpdatedAt();
@@ -114,8 +137,6 @@ public class Syncer {
                         }
                         String newLastUpdate = Utils.formatDateTimeForSql(Utils.parseSQLDate(latestUpdateDate).plusSeconds(1));
                         mSharedPref.putStringAndApply(SharedPref.LAST_SYNC_STORE,newLastUpdate);
-                    }else{
-                        num.postValue(null);
                     }
                 })
                 .subscribe(pullStoreResponse -> {
@@ -126,38 +147,144 @@ public class Syncer {
         );
     }
 
-    public void getLastPushDate(String tablename){
-        SyncService syncService = G8Api.createSyncService();
-/*        mDisposable.add(syncService.getLastPushDate(tablename,loggedInId)
-                .concatMap(new Function<LastPushDateResponse, Publisher<?>>() {
-                    @Override
-                    public Publisher<?> apply(LastPushDateResponse lastPushDateResponse) throws Exception {
-                        return null;
+    private Observable<LastPushDateResponse> getLastPushOfTable(String tablename){
+        return syncService.getLastPushDate(tablename,loggedInId);
+    }
+
+    private void pushStores(){
+        Log.d(TAG_STORE,"Pushing Stores...");
+        pushSingleStore();
+    }
+
+    /**
+     * Send stores to server
+     */
+    public void pushSingleStore(){
+        mDisposable.add(getLastPushOfTable("store")
+                .delaySubscription(2,TimeUnit.SECONDS)
+                .concatMapSingle(lastPushDateResponse -> {
+                    String lastPushDate = lastPushDateResponse.getData().getLastPushDate();
+                    if(!lastPushDate.equals(EMPTY_DATE)){
+                        return mStoreRepository.getByDateForSync(loggedInId,lastPushDate);
                     }
-                })*/
+                    return mStoreRepository.getFirstCreated(loggedInId);
+                }).concatMap(this::getStorePushObservable)
+                .subscribeOn(Schedulers.io())
+                .subscribe(pushStoreResponse -> {
+                    Log.d(TAG_STORE,"pushed " + pushStoreResponse.getData().getStoreName());
+                    Log.d(TAG_STORE, "message: " + pushStoreResponse.getMeta().getMessage());
+                    pushSingleStore();
+                }, e -> {
+                    if(e instanceof EmptyResultSetException){
+                        Log.d(TAG_STORE, "No stores to push.");
+                    }else{
+                        Log.e(TAG_STORE,e.getMessage());
+                    }
+                }, () -> {
+                    Log.d(TAG,"Pushing Stores Completed.");
+                })
+        );
+    }
 
-//        syncService.getLastPushDate(tablename,loggedInId)
-//                .flatMap(lastPushDateResponse -> {
-//                    return Observable.just(lastPushDateResponse.getData().getLastPushDate());
-//                }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<Observable<String>>() {
-//                    @Override
-//                    public void accept(Observable<String> stringObservable) throws Exception {
-//
-//                    }
-//                });
+    private Observable<PushStoreResponse> getStorePushObservable(Store store) {
+        return syncService.pushStore(
+                store.getUuid(),
+                store.getStoreName(),
+                store.getStoreAddress(),
+                String.valueOf(store.getLongitude()),
+                String.valueOf(store.getLatitude()),
+                String.valueOf(store.getUserId()),
+                store.getCreatedAt(),
+                store.getUpdatedAt()
+        ).subscribeOn(Schedulers.io());
+    }
+
+    // Timeinout
+
+    private void pushTimeIns(){
+        Log.d(TAG_TIMEIN, "pushing timein..");
+        pushSingleTimeInOut();
+    }
+
+    private void pushSingleTimeInOut() {
+        mDisposable.add(syncService.getLastPushDate("time_in_out",loggedInId)
+                .delaySubscription(3,TimeUnit.SECONDS)
+                .concatMapSingle(lastPushDateResponse -> {
+                    String lastPushDate = lastPushDateResponse.getData().getLastPushDate();
+                    if (!lastPushDate.equals(EMPTY_DATE)) {
+                        return mTimeInOutRepository.getByDateForSync(loggedInId, lastPushDate);
+                    }
+                    return mTimeInOutRepository.getFirstCreated(loggedInId);
+                }).concatMap(this::getTimeInOutPushObservable)
+                .subscribeOn(Schedulers.io())
+                .subscribe(pushTimeInResponse -> {
+                    TimeInOut timeInOut = pushTimeInResponse.getData();
+                    Log.d(TAG_TIMEIN, "pushed " + timeInOut.getCreatedAt() + " - " + (timeInOut.getType() == 1 ? "IN" : "OUT"));
+                    Log.d(TAG_TIMEIN, "message: " + pushTimeInResponse.getMeta().getMessage());
+                    pushSingleTimeInOut();
+                }, e -> {
+                    if (e instanceof EmptyResultSetException) {
+                        Log.d(TAG_TIMEIN, "No Time in to push.");
+                    } else {
+                        Log.e(TAG_TIMEIN, e.getMessage());
+                    }
+                }, () -> {
+                    Log.d(TAG, "Pushing Time in Completed.");
+                })
+        );
+
+    }
+
+    private Observable<PushTimeInResponse> getTimeInOutPushObservable(TimeInOut timeInOut) {
+        return syncService.pushTimeInOut(
+                String.valueOf(timeInOut.getUserId()),
+                String.valueOf(timeInOut.getStoreId()),
+                timeInOut.getUuid(),
+                String.valueOf(timeInOut.getType()),
+                timeInOut.getCreatedAt()
+        ).subscribeOn(Schedulers.io());
+    }
+
+//    new DateTime().withTime(0,0,0,0).minusDays(1).toString("yyyy-MM-dd")
+    private void pullTimeIns(String startDate){
+        Log.d(TAG_TIMEIN,"Retrieving timeins online..");
+        mDisposable.add(syncService.pullTimeIns("time_in_out",startDate,loggedInId)
+                .subscribeOn(Schedulers.io())
+                .delaySubscription(4,TimeUnit.SECONDS)
+                .doOnSuccess(pullResponse -> {
+                    mTimeInOutRepository.insertTimeInOut(pullResponse.getData())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe();
+                    PaginationResponse paginationResponse = pullResponse.pagination;
+                    if(paginationResponse.getTotalCount() > 0){
+                        Log.d(TAG_TIMEIN,"fetched " + paginationResponse.getTotalCount() + " timeins.");
+                        TimeInOut lastTimeInOut = pullResponse.getData().get(pullResponse.getData().size() - 1);
+                        String latestUpdateDate;
+                        if(lastTimeInOut.getUpdatedAt().equals(EMPTY_DATE)){
+                            latestUpdateDate = lastTimeInOut.getCreatedAt();
+                        }else{
+                            latestUpdateDate = lastTimeInOut.getUpdatedAt();
+                        }
+                        String newLastUpdate = Utils.formatDateTimeForSql(Utils.parseSQLDate(latestUpdateDate).plusSeconds(1));
+                        mSharedPref.putStringAndApply(SharedPref.LAST_SYNC_TIMEINOUT,newLastUpdate);
+                    }else{
+                        Log.d(TAG_TIMEIN, "timeins is up to date.");
+                    }
+                })
+                .subscribe(pullStoreResponse -> {
+                }, throwable -> {
+                    Log.e(TAG_TIMEIN,"");
+                    Log.e(TAG_TIMEIN,throwable.getMessage());
+                })
+        );
     }
 
 
 
 
-    public LiveData<String> getNum() {
-        return num;
-    }
+
 
     public void clearDisposables(){
-        isPulling = false;
         mDisposable.clear();
     }
 }

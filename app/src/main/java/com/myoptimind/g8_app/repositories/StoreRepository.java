@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.google.gson.Gson;
 import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.api.G8Api;
-import com.myoptimind.g8_app.features.syncing.response.PullStoreResponse;
+import com.myoptimind.g8_app.features.syncing.response.PullResponse;
 import com.myoptimind.g8_app.db.AppDatabase;
 import com.myoptimind.g8_app.db.dao.StoreDao;
 import com.myoptimind.g8_app.features.syncing.SyncService;
@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -89,6 +88,10 @@ public class StoreRepository {
     public Maybe<List<Store>> getStoresOfUser(String userId) { return mStoreDao.getUserStores(userId); }
     public Maybe<Store> getStoreByName(String storename){ return mStoreDao.getStoreByName(storename); }
 
+    // for sync
+    public Single<Store> getFirstCreated(String userId){ return mStoreDao.getFirstCreated(userId); }
+    public Single<Store> getByDateForSync(String userId,String datetime){ return mStoreDao.getByDateSync(userId,datetime); }
+
 
     // Insert
 
@@ -147,7 +150,7 @@ public class StoreRepository {
      * Network Requests
      */
 
-    public Single<PullStoreResponse> getStoresFromRemote(
+    public Single<PullResponse<Store>> getStoresFromRemote(
             String startDate,
             String offset,
             String limit

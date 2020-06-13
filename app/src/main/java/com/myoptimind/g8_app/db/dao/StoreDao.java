@@ -10,9 +10,12 @@ import com.myoptimind.g8_app.models.Store;
 import com.myoptimind.g8_app.models.UserStore;
 
 import java.util.List;
+import java.util.Observable;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 @Dao
 public interface StoreDao {
@@ -33,10 +36,10 @@ public interface StoreDao {
     void insertStoreListIgnoreStrat(List<Store> stores);
 
     @Query("SELECT * FROM store WHERE user_id = :userId AND created_at > :datetime OR updated_at > :datetime ORDER BY created_at,updated_at LIMIT 1")
-    Store getByDateSync(String userId, String datetime);
+    Single<Store> getByDateSync(String userId, String datetime);
 
     @Query("SELECT * FROM store WHERE user_id = :userId ORDER BY created_at LIMIT 1")
-    Store getFirstCreated(String userId);
+    Single<Store> getFirstCreated(String userId);
 
     @Query("SELECT COUNT(*) FROM store WHERE store_name LIKE :storeName")
     Integer getCountByStoreName(String storeName);

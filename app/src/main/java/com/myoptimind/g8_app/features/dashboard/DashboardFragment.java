@@ -208,7 +208,6 @@ public class DashboardFragment extends Fragment {
                 SharedPref sharedPref = SharedPref.getInstance(getActivity());
                 dashboardViewModel.clearUser();
                 sharedPref.setIdLoggedIn(null);
-                sharedPref.clearLastSyncs();
                 getActivity().finish();
             }
         });

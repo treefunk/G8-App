@@ -7,20 +7,20 @@ import com.myoptimind.g8_app.models.Store;
 
 import java.util.List;
 
-public class PullStoreResponse {
+public class PullResponse<T> {
 
-    public List<Store> data;
+    public List<T> data;
 
     @SerializedName("last_update")
     public String lastUpdate;
     public PaginationResponse pagination;
     public Meta meta;
 
-    public List<Store> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<Store> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 

@@ -83,7 +83,7 @@ public class LoginViewModel extends AndroidViewModel {
                         sharedPref.putStringIfEmpty(SharedPref.LAST_SYNC_SALES,loginResponse.getSalesLastSync());
                         sharedPref.putStringIfEmpty(SharedPref.LAST_SYNC_TIMESLIP,loginResponse.getTimeSlipLastSync());
                         sharedPref.putStringIfEmpty(SharedPref.LAST_SYNC_ANNOUNCEMENTS,loginResponse.getAnnouncementsLastSync());
-                        sharedPref.putStringIfEmpty(SharedPref.LAST_SYNC_TIMEINOUT,loginResponse.getTimeInOut());
+//                        sharedPref.putStringIfEmpty(SharedPref.LAST_SYNC_TIMEINOUT,loginResponse.getTimeInOut());
 
                         User user = new User();
                         user.setId(loginResponse.getId());

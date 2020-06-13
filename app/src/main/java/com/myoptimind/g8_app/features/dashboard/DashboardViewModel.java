@@ -20,10 +20,12 @@ import com.myoptimind.g8_app.repositories.StoreRepository;
 import com.myoptimind.g8_app.repositories.UserRepository;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 import io.reactivex.CompletableObserver;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
