@@ -213,8 +213,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-
-
         return v;
     }
 
@@ -228,6 +226,11 @@ public class DashboardFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

@@ -67,4 +67,9 @@ public class TimeInOutActivity extends LocationAwareActivity{
         ((TimeInFragment) firstFragment).onCheckAvailability(isAvailable);
         ((TimeOutFragment) secondFragment).onCheckAvailability(isAvailable);
     }
+
+    @Override
+    protected String getFragmentTag() {
+        return "TimeInOutFragment";
+    }
 }

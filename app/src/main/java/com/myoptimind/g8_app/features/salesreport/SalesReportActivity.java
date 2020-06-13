@@ -50,4 +50,9 @@ public class SalesReportActivity extends SingleActivityFragment {
     protected String setLabel() {
         return "Sales Report";
     }
+
+    @Override
+    protected String getFragmentTag() {
+        return "SalesReportFragment";
+    }
 }

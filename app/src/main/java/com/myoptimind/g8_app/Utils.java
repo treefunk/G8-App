@@ -5,6 +5,8 @@ import android.view.View;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 public class Utils {
 
@@ -54,6 +56,15 @@ public class Utils {
 
     public static String formatDateTimeForSql(DateTime dt){
         return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").print(dt);
+    }
+
+    public static String formatDateTimeForUrl(DateTime dt){
+        return ISODateTimeFormat.dateParser().print(dt);
+    }
+
+    public static DateTime parseSQLDate(String rawDate){
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        return formatter.parseDateTime(rawDate);
     }
 
 

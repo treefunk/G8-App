@@ -45,4 +45,9 @@ public class SingleBulletinActivity extends SingleActivityFragment {
     protected String setLabel() {
         return "BULLETIN";
     }
+
+    @Override
+    protected String getFragmentTag() {
+        return "SingleBulletinFragment";
+    }
 }

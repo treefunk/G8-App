@@ -14,22 +14,30 @@ import com.myoptimind.g8_app.features.announcementsmemos.memos.MemoFragment;
 
 public class AnnouncementsActivity extends SingleActivityFragment {
 
+    private Fragment targetFrag;
+
+
     public static Intent newIntent(Context context){
         Intent intent = new Intent(context,AnnouncementsActivity.class);
 
         return intent;
     }
 
+    public void setTargetFrag(Fragment targetFrag) {
+        this.targetFrag = targetFrag;
+    }
+
     @Override
     protected Fragment createFragment() {
         TabbedFragment tabbedFragment = TabbedFragment.newInstance();
-
         tabbedFragment.setStateAdapter(new FragmentStateAdapter(getSupportFragmentManager(),getLifecycle()) {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
                 if(position == 0) {
-                    return BulletinFragment.newInstance();
+                    Fragment fragment = BulletinFragment.newInstance();
+                    fragment.setTargetFragment(targetFrag,1);
+                    return fragment;
                 }
                 return MemoFragment.newInstance();
             }
@@ -48,5 +56,10 @@ public class AnnouncementsActivity extends SingleActivityFragment {
     @Override
     protected String setLabel() {
         return "Announcements";
+    }
+
+    @Override
+    protected String getFragmentTag() {
+        return "AnnouncementsFragment";
     }
 }

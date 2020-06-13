@@ -28,4 +28,8 @@ public class LoginActivity extends SingleActivityFragment {
         return new LoginFragment();
     }
 
+    @Override
+    protected String getFragmentTag() {
+        return "LoginFragment";
+    }
 }

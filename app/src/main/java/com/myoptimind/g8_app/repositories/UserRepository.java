@@ -1,6 +1,7 @@
 package com.myoptimind.g8_app.repositories;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
@@ -23,7 +24,7 @@ public class UserRepository {
     private UserDao mUserDao;
     private AuthService mAuthService;
 
-    public UserRepository(Application application){
+    public UserRepository(Context application){
         mUserDao = AppDatabase.getInstance(application).userDao();
         mAuthService = G8Api.createAuthService();
     }

@@ -6,7 +6,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.myoptimind.g8_app.features.dashboard.DashboardViewModel;
 import com.myoptimind.g8_app.features.shared.SingleActivityFragment;
 
 public class SettingsActivity extends SingleActivityFragment {
@@ -37,5 +39,10 @@ public class SettingsActivity extends SingleActivityFragment {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected String getFragmentTag() {
+        return "SettingsFragment";
     }
 }

@@ -34,5 +34,9 @@ public class PinYourStoreActivity extends SingleActivityFragment {
         return "Pin Your Store";
     }
 
+    @Override
+    protected String getFragmentTag() {
+        return "PinYourStoreFragment";
+    }
 }
 

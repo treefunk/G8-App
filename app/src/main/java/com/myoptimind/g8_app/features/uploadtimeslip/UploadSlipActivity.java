@@ -24,4 +24,9 @@ public class UploadSlipActivity extends SingleActivityFragment {
     protected String setLabel() {
         return "upload time slip";
     }
+
+    @Override
+    protected String getFragmentTag() {
+        return "UploadSlipFragment";
+    }
 }

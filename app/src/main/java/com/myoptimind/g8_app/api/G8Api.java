@@ -2,6 +2,7 @@ package com.myoptimind.g8_app.api;
 
 import com.myoptimind.g8_app.BuildConfig;
 import com.myoptimind.g8_app.features.login.AuthService;
+import com.myoptimind.g8_app.features.syncing.SyncService;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -58,6 +59,11 @@ public class G8Api {
     public static AuthService createAuthService(){
         return create(HttpUrl.parse(BASE_URL)).create(AuthService.class);
     }
+
+    public static SyncService createSyncService(){
+        return create(HttpUrl.parse(BASE_URL)).create(SyncService.class);
+    }
+
 
 
 

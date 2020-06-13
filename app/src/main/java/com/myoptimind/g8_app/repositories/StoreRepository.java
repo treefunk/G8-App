@@ -1,14 +1,17 @@
 package com.myoptimind.g8_app.repositories;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
 import com.myoptimind.g8_app.Utils;
 import com.myoptimind.g8_app.api.G8Api;
+import com.myoptimind.g8_app.features.syncing.response.PullStoreResponse;
 import com.myoptimind.g8_app.db.AppDatabase;
 import com.myoptimind.g8_app.db.dao.StoreDao;
+import com.myoptimind.g8_app.features.syncing.SyncService;
 import com.myoptimind.g8_app.models.LocalStore;
 import com.myoptimind.g8_app.models.LocalStoreList;
 import com.myoptimind.g8_app.models.Store;
@@ -21,19 +24,24 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class StoreRepository {
 
     private StoreDao mStoreDao;
+    private SyncService mSyncService;
+
     public static final int STRAT_REPLACE = 1;
     public static final int STRAT_IGNORE  = 2;
     private static final String LOCAL_STORE_JSON = "stores.json";
 //    private StoreService mStoreService;
 
-    public StoreRepository(Application application){
+    public StoreRepository(Context application){
         mStoreDao = AppDatabase.getInstance(application).storeDao();
+        mSyncService = G8Api.createSyncService();
 //        mAuthService = G8Api.createAuthService(); // TODO
     }
 
@@ -109,8 +117,8 @@ public class StoreRepository {
         return mStoreDao.insertStore(store);
     }
 
-    public void insertStore(List<Store> stores){
-        mStoreDao.insertStoreList(stores);
+    public Completable insertStore(List<Store> stores){
+        return mStoreDao.insertStoreList(stores);
     }
 
     public void insertStore(List<Store> stores, int stratType){
@@ -138,5 +146,13 @@ public class StoreRepository {
     /**
      * Network Requests
      */
+
+    public Single<PullStoreResponse> getStoresFromRemote(
+            String startDate,
+            String offset,
+            String limit
+    ){
+        return mSyncService.pullStores("store",startDate,offset,limit);
+    }
 
 }

@@ -133,7 +133,7 @@ public class LoginViewModel extends AndroidViewModel {
                         ErrorResponse errorResponse = G8Api.getConverter().convert(e.response().errorBody());
                         mErrorString.setValue(errorResponse.getMeta().getMessage());
                         isRequesting.setValue(false);
-                    } catch (ClassCastException e) {
+                    } catch (Exception e) {
                         mErrorString.setValue("No Internet Connection. Please try again.");
                         isRequesting.setValue(false);
                     }

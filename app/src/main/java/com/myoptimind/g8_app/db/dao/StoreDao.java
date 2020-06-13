@@ -27,7 +27,7 @@ public interface StoreDao {
     Completable insertStore(Store store);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertStoreList(List<Store> stores);
+    Completable insertStoreList(List<Store> stores);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertStoreListIgnoreStrat(List<Store> stores);

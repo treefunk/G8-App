@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.myoptimind.g8_app.R;
 import com.myoptimind.g8_app.features.shared.LocationAwareFragment;
+import com.myoptimind.g8_app.features.syncing.Syncer;
 import com.myoptimind.g8_app.features.timeinout.Coordinates;
 
 import java.util.AbstractList;
@@ -94,6 +95,10 @@ public class PinYourStoreFragment extends LocationAwareFragment {
                         names);
                 acStoreName.setAdapter(arrayAdapter);
             }
+        });
+
+        Syncer.getInstance(getActivity().getApplicationContext()).getNum().observe(getViewLifecycleOwner(), m -> {
+            Toast.makeText(getActivity(),m,Toast.LENGTH_SHORT).show();
         });
 
         return v;

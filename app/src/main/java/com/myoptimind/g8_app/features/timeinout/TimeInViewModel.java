@@ -105,8 +105,9 @@ public class TimeInViewModel extends AndroidViewModel {
              double mostNear = -1;
              Store closestStore = null;
 
+             int i = 0;
              for (Store store : mStores) {
-
+                 i++;
                  boolean isFirstStoreDetected = mostNear == -1;
                  boolean isStoreWithoutCoordinates = store.getLatitude() == 0 && store.getLongitude() == 0;
 
@@ -121,6 +122,7 @@ public class TimeInViewModel extends AndroidViewModel {
                          store.getLongitude()
                  );
 
+                 Log.d("GPS", "STORE #" + i);
                  Log.d("GPS", store.getStoreName());
                  Log.d("GPS", "distance: " + distance);
 
