@@ -11,10 +11,13 @@ import com.myoptimind.g8_app.api.G8Api;
 import com.myoptimind.g8_app.features.shared.SharedPref;
 import com.myoptimind.g8_app.features.syncing.response.LastPushDateResponse;
 import com.myoptimind.g8_app.features.syncing.response.PaginationResponse;
+import com.myoptimind.g8_app.features.syncing.response.PushSalesResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushStoreResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushTimeInResponse;
+import com.myoptimind.g8_app.models.SalesReport;
 import com.myoptimind.g8_app.models.Store;
 import com.myoptimind.g8_app.models.TimeInOut;
+import com.myoptimind.g8_app.repositories.SalesReportRepository;
 import com.myoptimind.g8_app.repositories.StoreRepository;
 import com.myoptimind.g8_app.repositories.TimeInOutRepository;
 import com.myoptimind.g8_app.repositories.UserRepository;
@@ -33,6 +36,7 @@ public class Syncer {
     private static final String TAG = "Syncer";
     private static final String TAG_STORE = TAG + "/stores";
     private static final String TAG_TIMEIN = TAG + "/timeinout";
+    private static final String TAG_SALES = TAG + "/sales";
 
     private static final String EMPTY_DATE = "0000-00-00 00:00:00";
 
@@ -41,9 +45,13 @@ public class Syncer {
     private CompositeDisposable mDisposable = new CompositeDisposable();
     private MutableLiveData<String> num = new MutableLiveData<>();
     private Context mContext;
+
+    // REPOSITORIES
     private UserRepository mUserRepository;
     private StoreRepository mStoreRepository;
     private TimeInOutRepository mTimeInOutRepository;
+    private SalesReportRepository mSalesReportRepository;
+
     private SharedPref mSharedPref;
     private String loggedInId;
     private SyncService syncService;
@@ -51,9 +59,13 @@ public class Syncer {
 
     public Syncer(Context context) {
         mContext = context;
+
+        // Initialize repositories
         mUserRepository = new UserRepository(context);
         mStoreRepository = new StoreRepository(context);
         mTimeInOutRepository = new TimeInOutRepository(context);
+        mSalesReportRepository = new SalesReportRepository(context);
+
         mSharedPref = SharedPref.getInstance(context);
         loggedInId = mSharedPref.getIdLoggedIn();
         syncService = G8Api.createSyncService();
@@ -89,15 +101,16 @@ public class Syncer {
         pullStores(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_STORE),0,1000);
         pushStores();
         // SYNC TIME IN TIME OUT
-        String d;
-        if(!mSharedPref.timeInOutExists()){
-            d = new DateTime().withTime(0,0,0,0).minusDays(1).toString("yyyy-MM-dd HH:mm:ss");
-        }else{
-            d = Utils.parseSQLDate(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_TIMEINOUT)).toString("yyyy-MM-dd HH:mm:ss");
-        }
-        pullTimeIns(d);
+        pullTimeIns(getLastSyncTimeIn());
         pushTimeIns();
+        // SYNC SALES
+        pushSingleSalesReport();
     }
+
+
+    /**
+     * STORES
+     */
 
     /**
      * Fetch stores from server
@@ -199,7 +212,9 @@ public class Syncer {
         ).subscribeOn(Schedulers.io());
     }
 
-    // Timeinout
+    /**
+     *  TIME IN OUT
+     */
 
     private void pushTimeIns(){
         Log.d(TAG_TIMEIN, "pushing timein..");
@@ -277,6 +292,61 @@ public class Syncer {
                     Log.e(TAG_TIMEIN,throwable.getMessage());
                 })
         );
+    }
+
+    private String getLastSyncTimeIn(){
+        if(!mSharedPref.timeInOutExists()){
+             return new DateTime().withTime(0,0,0,0).minusDays(1).toString("yyyy-MM-dd HH:mm:ss");
+        }
+        return  Utils.parseSQLDate(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_TIMEINOUT)).toString("yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
+     *
+     *  SALES REPORT
+     */
+
+    private void pushSalesReports(){
+        pushSingleSalesReport();
+    }
+
+    private void pushSingleSalesReport(){
+        mDisposable.add(getLastPushOfTable("sales")
+                .delaySubscription(5,TimeUnit.SECONDS)
+                .concatMapSingle(lastPushDateResponse -> {
+                    String lastPushDate = lastPushDateResponse.getData().getLastPushDate();
+                    if(!lastPushDate.equals(EMPTY_DATE)){
+                        return mSalesReportRepository.getByDateSync(loggedInId,lastPushDate);
+                    }
+                    return mSalesReportRepository.getFirstCreated(loggedInId);
+                }).concatMap(this::getSalesReportObservable)
+                .subscribeOn(Schedulers.io())
+                .subscribe(pushStoreResponse -> {
+                    Log.d(TAG_SALES,"pushed " + pushStoreResponse.getData().getSales() + " sales " + pushStoreResponse.getData().getDatetime() );
+                    Log.d(TAG_SALES, "message: " + pushStoreResponse.getMeta().getMessage());
+                    pushSingleSalesReport();
+                }, e -> {
+                    if(e instanceof EmptyResultSetException){
+                        Log.d(TAG_SALES, "No salesreport to push.");
+                    }else{
+                        Log.e(TAG_SALES,e.getMessage());
+                    }
+                }, () -> {
+                    Log.d(TAG,"Pushing Sales Report Completed.");
+                })
+        );
+    }
+
+    private Observable<PushSalesResponse> getSalesReportObservable(SalesReport salesReport) {
+        return syncService.pushSales(
+                salesReport.getUuid(),
+                salesReport.getUserId(),
+                salesReport.getDatetime(),
+                salesReport.getSales(),
+                salesReport.getStoreUuid(),
+                salesReport.getCreatedAt(),
+                ""
+        ).subscribeOn(Schedulers.io());
     }
 
 

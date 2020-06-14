@@ -2,6 +2,7 @@ package com.myoptimind.g8_app.features.syncing;
 
 import com.myoptimind.g8_app.features.syncing.response.LastPushDateResponse;
 import com.myoptimind.g8_app.features.syncing.response.PullResponse;
+import com.myoptimind.g8_app.features.syncing.response.PushSalesResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushStoreResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushTimeInResponse;
 import com.myoptimind.g8_app.models.Store;
@@ -36,6 +37,15 @@ public interface SyncService {
             @Query("s_date") String startDate,
             @Query("user_id") String userId
     );
+/*
+
+    @GET("sync")
+    Single<PullResponse<TimeInOut>> pullSales(
+            @Query("table_name") String tableName,
+            @Query("s_date") String startDate,
+            @Query("user_id") String userId
+    );
+*/
 
 
 
@@ -44,6 +54,7 @@ public interface SyncService {
      *  PUSH (Send data to server) endpoints
      */
 
+    // get last push date in server
     @POST("sync/sync-time")
     @FormUrlEncoded
     Observable<LastPushDateResponse> getLastPushDate(
@@ -75,6 +86,19 @@ public interface SyncService {
             @Field("uuid") String uuid,
             @Field("type") String type,
             @Field("created_at") String createdAt
+    );
+
+    //push sales
+    @POST("sales")
+    @FormUrlEncoded
+    Observable<PushSalesResponse> pushSales(
+            @Field("uuid") String uuid,
+            @Field("user_id") String userId,
+            @Field("sale_date") String saleDate,
+            @Field("sales") String sales,
+            @Field("store_uuid") String storeUuid,
+            @Field("created_at") String createdAt,
+            @Field("updated_at") String updatedAt
     );
 
 

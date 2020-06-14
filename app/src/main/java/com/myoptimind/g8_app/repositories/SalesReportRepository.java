@@ -1,6 +1,7 @@
 package com.myoptimind.g8_app.repositories;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.myoptimind.g8_app.Utils;
@@ -21,7 +22,7 @@ public class SalesReportRepository {
 
     SalesReportDao mSalesReportDao;
 
-    public SalesReportRepository(Application application) {
+    public SalesReportRepository(Context application) {
         mSalesReportDao = AppDatabase.getInstance(application).salesReportDao();
     }
 
@@ -34,7 +35,6 @@ public class SalesReportRepository {
     // Fetch
 
     public void getByDate(final String userId, final DateTime date,final String storeUuid, final SalesFetchListener salesFetchListener){
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -64,4 +64,14 @@ public class SalesReportRepository {
     /**
      * Network Requests
      */
+
+    public Single<SalesReport> getByDateSync(String userId, String date){
+        return mSalesReportDao.getByDateSync(userId,date);
+    }
+
+    public Single<SalesReport> getFirstCreated(String userId){
+        return mSalesReportDao.getFirstCreated(userId);
+    }
+
+
 }

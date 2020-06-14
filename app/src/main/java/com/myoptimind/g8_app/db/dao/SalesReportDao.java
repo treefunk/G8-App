@@ -27,11 +27,11 @@ public interface SalesReportDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertSalesReportList(List<SalesReport> salesReports);
 
-    @Query("SELECT * FROM sales_report WHERE user_id = :userId AND store_uuid = :storeUuid AND has_synced = 0 AND created_at > :datetime OR updated_at > :datetime ORDER BY created_at,updated_at LIMIT 1")
-    SalesReport getByDateSync(String userId, String datetime, String storeUuid);
+    @Query("SELECT * FROM sales_report WHERE user_id = :userId AND has_synced = 0 AND created_at > :datetime OR updated_at > :datetime ORDER BY created_at,updated_at LIMIT 1")
+    Single<SalesReport> getByDateSync(String userId, String datetime);
 
-    @Query("SELECT * FROM sales_report WHERE user_id = :userId AND store_uuid = :storeUuid AND has_synced = 0 ORDER BY created_at,updated_at LIMIT 1")
-    SalesReport getFirstCreated(String userId, String storeUuid);
+    @Query("SELECT * FROM sales_report WHERE user_id = :userId AND has_synced = 0 ORDER BY created_at,updated_at LIMIT 1")
+    Single<SalesReport> getFirstCreated(String userId);
 
     @Delete
     Completable removeSalesReport(SalesReport salesReport);
