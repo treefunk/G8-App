@@ -54,6 +54,12 @@ public class SalesReportRepository {
         return mSalesReportDao.insertSalesReportList(salesReports);
     }
 
+    // Update
+
+    public Completable updateSalesReportSync(String storeUuid, String datetime, String hasSync){
+        return mSalesReportDao.updateSalesReport(storeUuid,datetime,hasSync);
+    }
+
 
     // Delete
     public Completable removeSalesReport(SalesReport salesReport) {

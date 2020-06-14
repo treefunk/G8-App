@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.myoptimind.g8_app.models.SalesReport;
 
@@ -36,4 +37,6 @@ public interface SalesReportDao {
     @Delete
     Completable removeSalesReport(SalesReport salesReport);
 
+    @Query("UPDATE sales_report SET has_synced = :hasSync WHERE store_uuid = :storeUuid AND datetime = :saleDate")
+    Completable updateSalesReport(String storeUuid, String saleDate, String hasSync);
 }

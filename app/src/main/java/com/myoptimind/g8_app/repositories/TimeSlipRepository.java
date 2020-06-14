@@ -1,6 +1,7 @@
 package com.myoptimind.g8_app.repositories;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
@@ -10,13 +11,14 @@ import com.myoptimind.g8_app.models.TimeSlip;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 public class TimeSlipRepository {
 
     TimeSlipDao mTimeSlipDao;
 
 
-    public TimeSlipRepository(Application application) {
+    public TimeSlipRepository(Context application) {
         mTimeSlipDao = AppDatabase.getInstance(application).timeSlipDao();
     }
 
@@ -28,6 +30,14 @@ public class TimeSlipRepository {
 
     public LiveData<TimeSlip> getByDate(String userId, String date){
         return mTimeSlipDao.getByDate(userId,"%" + date + "%");
+    }
+
+    public Single<TimeSlip> getByDateSync(String userId, String date){
+        return mTimeSlipDao.getByDateSync(userId,date);
+    }
+
+    public Single<TimeSlip> getFirstCreated(String userId){
+        return mTimeSlipDao.getFirstCreated(userId);
     }
 
     // Insert

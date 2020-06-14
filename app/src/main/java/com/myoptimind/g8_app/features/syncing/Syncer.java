@@ -14,22 +14,32 @@ import com.myoptimind.g8_app.features.syncing.response.PaginationResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushSalesResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushStoreResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushTimeInResponse;
+import com.myoptimind.g8_app.features.syncing.response.PushUploadSlipResponse;
 import com.myoptimind.g8_app.models.SalesReport;
 import com.myoptimind.g8_app.models.Store;
 import com.myoptimind.g8_app.models.TimeInOut;
+import com.myoptimind.g8_app.models.TimeSlip;
 import com.myoptimind.g8_app.repositories.SalesReportRepository;
 import com.myoptimind.g8_app.repositories.StoreRepository;
 import com.myoptimind.g8_app.repositories.TimeInOutRepository;
+import com.myoptimind.g8_app.repositories.TimeSlipRepository;
 import com.myoptimind.g8_app.repositories.UserRepository;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Multipart;
 
 public class Syncer {
 
@@ -37,6 +47,7 @@ public class Syncer {
     private static final String TAG_STORE = TAG + "/stores";
     private static final String TAG_TIMEIN = TAG + "/timeinout";
     private static final String TAG_SALES = TAG + "/sales";
+    private static final String TAG_TIMESLIP = TAG + "/timeslips";
 
     private static final String EMPTY_DATE = "0000-00-00 00:00:00";
 
@@ -51,6 +62,7 @@ public class Syncer {
     private StoreRepository mStoreRepository;
     private TimeInOutRepository mTimeInOutRepository;
     private SalesReportRepository mSalesReportRepository;
+    private TimeSlipRepository mTimeSlipRepository;
 
     private SharedPref mSharedPref;
     private String loggedInId;
@@ -65,6 +77,7 @@ public class Syncer {
         mStoreRepository = new StoreRepository(context);
         mTimeInOutRepository = new TimeInOutRepository(context);
         mSalesReportRepository = new SalesReportRepository(context);
+        mTimeSlipRepository = new TimeSlipRepository(context);
 
         mSharedPref = SharedPref.getInstance(context);
         loggedInId = mSharedPref.getIdLoggedIn();
@@ -86,7 +99,7 @@ public class Syncer {
 
     public void start() {
         // Sync every 2 minutes
-        Observable.interval(5, TimeUnit.MINUTES)
+        Observable.interval(15, TimeUnit.SECONDS)
                 .startWith(10L)
                 .doOnNext(n -> {
                         mDisposable.clear();
@@ -98,13 +111,16 @@ public class Syncer {
     public void sync(){
         Log.d(TAG,"syncing..");
         // SYNC STORES
-        pullStores(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_STORE),0,1000);
+        pullStores(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_STORE),0,500);
         pushStores();
         // SYNC TIME IN TIME OUT
         pullTimeIns(getLastSyncTimeIn());
         pushTimeIns();
         // SYNC SALES
-        pushSingleSalesReport();
+        pullSales(mSharedPref.getValueByKey(SharedPref.LAST_SYNC_SALES),0,500);
+        pushSalesReports();
+        // timeslip / uploadslip
+        pushTimeSlips();
     }
 
 
@@ -306,6 +322,57 @@ public class Syncer {
      *  SALES REPORT
      */
 
+
+    /**
+     * Fetch Salesreport from server
+     */
+    public void pullSales(final String startDate, int offset, int limit){
+        Log.d(TAG_STORE,"Retrieving sales online..");
+
+        String off = String.valueOf(offset);
+        String lim  = String.valueOf(limit);
+
+        mDisposable.add(syncService.pullSales("sales",startDate,off,lim,loggedInId)
+                .subscribeOn(Schedulers.io())
+                .delaySubscription(6,TimeUnit.SECONDS)
+                .doOnSuccess(pullStoreResponse -> {
+                    for(SalesReport salesReport : pullStoreResponse.getData()){
+                        salesReport.setHasSynced(true);
+                    }
+                    mSalesReportRepository.insertSalesReport(pullStoreResponse.getData())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe();
+                    PaginationResponse paginationResponse = pullStoreResponse.pagination;
+                    int pullSalesOffset = paginationResponse.getOffset() + paginationResponse.getLimit() + 1;
+                    if (pullSalesOffset < paginationResponse.getTotalCount()) {
+                        Log.d(TAG_SALES,"fetching sales: " +paginationResponse.getOffset() + "/" +paginationResponse.totalCount);
+                        pullSales(startDate, pullSalesOffset, paginationResponse.limit);
+                    }else{
+                        Log.d(TAG_SALES, "Sales list is up to date.");
+                    }
+                    if(paginationResponse.getTotalCount() > 0){
+                        SalesReport salesReport = pullStoreResponse.getData().get(pullStoreResponse.getData().size() - 1);
+                        String latestUpdateDate;
+                        if(salesReport.getUpdatedAt().equals(EMPTY_DATE)){
+                            latestUpdateDate = salesReport.getCreatedAt();
+                        }else{
+                            latestUpdateDate = salesReport.getUpdatedAt();
+                        }
+                        if(!latestUpdateDate.equals(startDate)){
+                            Log.d(TAG_SALES,"last update date - " + latestUpdateDate);
+                        }
+                        String newLastUpdate = Utils.formatDateTimeForSql(Utils.parseSQLDate(latestUpdateDate).plusSeconds(1));
+                        mSharedPref.putStringAndApply(SharedPref.LAST_SYNC_SALES,newLastUpdate);
+                    }
+                })
+                .subscribe(pullStoreResponse -> {
+                }, throwable -> {
+                    Log.e(TAG,"");
+                    Log.e(TAG,throwable.getMessage());
+                })
+        );
+    }
+
     private void pushSalesReports(){
         pushSingleSalesReport();
     }
@@ -320,19 +387,21 @@ public class Syncer {
                     }
                     return mSalesReportRepository.getFirstCreated(loggedInId);
                 }).concatMap(this::getSalesReportObservable)
-                .subscribeOn(Schedulers.io())
-                .subscribe(pushStoreResponse -> {
-                    Log.d(TAG_SALES,"pushed " + pushStoreResponse.getData().getSales() + " sales " + pushStoreResponse.getData().getDatetime() );
-                    Log.d(TAG_SALES, "message: " + pushStoreResponse.getMeta().getMessage());
+                .concatMapCompletable(pushSalesResponse -> {
+                    SalesReport salesReport = pushSalesResponse.getData();
+                    Log.d(TAG_SALES,"pushed " + salesReport.getSales() + " sales " + salesReport.getDatetime() );
+                    Log.d(TAG_SALES, "message: " + pushSalesResponse.getMeta().getMessage());
+                    return mSalesReportRepository.updateSalesReportSync(salesReport.getStoreUuid(),salesReport.getDatetime(),"1");
+                }).subscribeOn(Schedulers.io())
+                .subscribe(() -> {
+                    Log.v(TAG_SALES,"successfully updated sales");
                     pushSingleSalesReport();
                 }, e -> {
                     if(e instanceof EmptyResultSetException){
-                        Log.d(TAG_SALES, "No salesreport to push.");
+                        Log.d(TAG_STORE, "No stores to push.");
                     }else{
-                        Log.e(TAG_SALES,e.getMessage());
+                        Log.e(TAG_STORE,e.getMessage());
                     }
-                }, () -> {
-                    Log.d(TAG,"Pushing Sales Report Completed.");
                 })
         );
     }
@@ -346,6 +415,77 @@ public class Syncer {
                 salesReport.getStoreUuid(),
                 salesReport.getCreatedAt(),
                 ""
+        ).subscribeOn(Schedulers.io());
+    }
+
+
+    // push time slip
+
+    /**
+     * Send time slip to server
+     */
+    private void pushTimeSlips(){
+        Log.v(TAG_TIMESLIP,"pushing timeslips..");
+        pushSingleTimeSlips();
+    }
+
+    public void pushSingleTimeSlips(){
+        mDisposable.add(getLastPushOfTable("timeslips")
+                .delaySubscription(7,TimeUnit.SECONDS)
+                .concatMapSingle(lastPushDateResponse -> {
+                    String lastPushDate = lastPushDateResponse.getData().getLastPushDate();
+                    if(!lastPushDate.equals(EMPTY_DATE)){
+                        return mTimeSlipRepository.getByDateSync(loggedInId,lastPushDate);
+                    }
+                    return mTimeSlipRepository.getFirstCreated(loggedInId);
+                }).concatMap(timeSlip -> {
+                    File file = new File(timeSlip.getTimecard());
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file );
+                    MultipartBody.Part multipart = MultipartBody.Part.createFormData(
+                            "timecard",
+                            loggedInId + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +".jpg",
+                            requestBody
+                    );
+                    return getUploadPushObservable(
+                            RequestBody.create(MediaType.parse("multipart/form-data"),loggedInId),
+                            multipart,
+                            RequestBody.create(MediaType.parse("multipart/form-data"),timeSlip.getCreatedAt())
+                    );
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe(pushUploadSlipResponse -> {
+                    TimeSlip timeSlip = pushUploadSlipResponse.getData();
+//                    File file = new File(timeSlip.getTimecard());
+                    File dir = new File(mContext.getFilesDir(),"time_slip");
+
+                    //delete file after pushing
+                    DateTime dt = Utils.parseSQLDate(timeSlip.getCreatedAt());
+                    String date = DateTimeFormat.forPattern("dd_MM_yyyy").print(dt);
+                    File truefile = new File(dir,loggedInId + "_" + date + "_timeslip.jpg");
+                    if(truefile.exists()){
+                        truefile.delete();
+                        Log.d(TAG_TIMESLIP,"cleared file " + truefile.getName());
+                    }
+                    Log.d(TAG_TIMESLIP,"pushed " + loggedInId + " uploadslip on date " + timeSlip.getCreatedAt());
+                    Log.d(TAG_TIMESLIP, "message: " + pushUploadSlipResponse.getMeta().getMessage());
+                    pushSingleTimeSlips();
+                }, e -> {
+                    if(e instanceof EmptyResultSetException){
+                        Log.d(TAG_TIMESLIP, "No timeslip to push.");
+                    }else{
+                        Log.e(TAG_TIMESLIP,e.getMessage());
+                    }
+                }, () -> {
+                    Log.d(TAG,"Pushing timeslip Completed.");
+                })
+        );
+    }
+
+    private Observable<PushUploadSlipResponse> getUploadPushObservable(RequestBody userId, MultipartBody.Part image, RequestBody createdAt) {
+        return syncService.pushUploadSlip(
+                userId,
+                image,
+                createdAt
         ).subscribeOn(Schedulers.io());
     }
 

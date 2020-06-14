@@ -82,111 +82,14 @@ public class SalesViewModel extends AndroidViewModel {
 
     }
 
-
-   /* private void pullSales(final Context context, String lastSyncDate, final SuccessListener successListener) {
-        ApiHandler.getInstance().pullFromTable(
-                "sales",
-                lastSyncDate,
-                null,
-                -1,
-                -1,
-                String.valueOf(loggedInId),
-                new ApiHandler.SyncSuccessListener() {
-                    @Override
-                    public void onSuccess(JSONArray responseArray, JSONObject pagination, String dateExecuted) {
-                        Gson gson = new Gson();
-                        SalesReport[] salesReports = gson.fromJson(responseArray.toString(), SalesReport[].class);
-
-                        for(SalesReport salesReport : salesReports){
-                            salesReport.setHasSynced(true);
-                        }
-
-                        mSalesReportRepository.insertSalesReport(Arrays.asList(salesReports));
-                        SharedPref.putStringAndApply(context, SharedPref.LAST_SYNC_SALES, dateExecuted);
-                        successListener.onSuccess(true);
-                    }
-
-                    @Override
-                    public void onError(String message) {
-                        Log.v(TAG, message);
-                        successListener.onSuccess(false);
-                    }
-                });
-    }
-
-    public void doSync(final Application application, final SuccessListener successListener) {
-        pullSales(application, SharedPref.getValueByKey(application, SharedPref.LAST_SYNC_SALES), new SuccessListener() {
-            @Override
-            public void onSuccess(Boolean success) {
-                setCurrentMonth(new DateTime().getMonthOfYear(),new DateTime().getYear());
-                pushSalesReport(application, new SuccessListener() {
-                    @Override
-                    public void onSuccess(Boolean success) {
-                        Log.v(TAG,"finished syncing.");
-                        successListener.onSuccess(true);
-                    }
-                });
-            }
-        });
-    }
-
-    public void pushSalesReport(Application application, final SuccessListener successListener){
-        pushSingleSalesReport(application,successListener);
-    }
-
-    private void pushSingleSalesReport(final Application application, final SuccessListener successListener) {
-        ApiHandler.getInstance().getLastSyncDate("sales",
-                SharedPref.getIdLoggedIn(application),
-                new ApiHandler.SyncDateListener() {
-                    @Override
-                    public void onSuccess(String date) {
-                        SalesReport salesReport = null;
-                        if(!date.equals("0000-00-00 00:00:00")){
-                            salesReport = mSalesReportRepository.getByDateSync(loggedInId,date,selectedStoreUuid);
-                        }else{
-                            salesReport = mSalesReportRepository.getFirstCreated(loggedInId,selectedStoreUuid);
-                        }
-                        if(salesReport != null){
-                            ApiHandler.getInstance().pushSalesReport(salesReport, new ApiHandler.SalesReportListener() {
-                                @Override
-                                public void onSuccess(SalesReport sr) {
-                                    if(sr != null){
-                                        pushSingleSalesReport(application,successListener);
-                                    }else{
-                                        successListener.onSuccess(true);
-                                    }
-                                }
-
-                                @Override
-                                public void onError(String message) {
-                                    Log.v(TAG,"pushsalesreport" + message);
-                                }
-                            });
-                        }else{
-                            successListener.onSuccess(true);
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(String message) {
-                        Log.v(TAG,"syncdate " + message);
-                    }
-                });
-    }*/
-
     public void setSelectedStoreUuid(String selectedStoreUuid) {
         this.selectedStoreUuid = selectedStoreUuid;
     }
 
     public void setCurrentMonth(int month, int year) {
-//        DateTime startDate = new DateTime(year,month,1,0,0);
-//        DateTime endDate = startDate.dayOfMonth().withMaximumValue();
-
-
 
         List<SalesDay> salesDays = new ArrayList<>();
-        mSaleDays.setValue(new ArrayList<SalesDay>());
+        mSaleDays.setValue(new ArrayList<>());
 
 
         DateTime startDate = new DateTime(year,month,1,0,0);

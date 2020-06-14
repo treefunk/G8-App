@@ -5,15 +5,22 @@ import com.myoptimind.g8_app.features.syncing.response.PullResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushSalesResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushStoreResponse;
 import com.myoptimind.g8_app.features.syncing.response.PushTimeInResponse;
+import com.myoptimind.g8_app.features.syncing.response.PushUploadSlipResponse;
+import com.myoptimind.g8_app.models.SalesReport;
 import com.myoptimind.g8_app.models.Store;
 import com.myoptimind.g8_app.models.TimeInOut;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface SyncService {
@@ -35,6 +42,15 @@ public interface SyncService {
     Single<PullResponse<TimeInOut>> pullTimeIns(
             @Query("table_name") String tableName,
             @Query("s_date") String startDate,
+            @Query("user_id") String userId
+    );
+
+    @GET("sync")
+    Single<PullResponse<SalesReport>> pullSales(
+            @Query("table_name") String tableName,
+            @Query("s_date") String startDate,
+            @Query("offset") String offset,
+            @Query("limit") String limit,
             @Query("user_id") String userId
     );
 /*
@@ -99,6 +115,15 @@ public interface SyncService {
             @Field("store_uuid") String storeUuid,
             @Field("created_at") String createdAt,
             @Field("updated_at") String updatedAt
+    );
+
+    // push upload slip
+    @Multipart
+    @POST("timeslip/upload")
+    Observable<PushUploadSlipResponse> pushUploadSlip(
+            @Part("user_id") RequestBody userId,
+            @Part MultipartBody.Part image,
+            @Part("created_at") RequestBody createdAt
     );
 
 
