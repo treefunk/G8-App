@@ -2,6 +2,7 @@ package com.myoptimind.g8_app.repositories;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -90,7 +91,10 @@ public class StoreRepository {
 
     // for sync
     public Single<Store> getFirstCreated(String userId){ return mStoreDao.getFirstCreated(userId); }
-    public Single<Store> getByDateForSync(String userId,String datetime){ return mStoreDao.getByDateSync(userId,datetime); }
+    public Single<Store> getByDateForSync(String userId,String datetime){
+        Log.v("storerepo","user_id - " +userId + "\ndatetime - " + datetime);
+        return mStoreDao.getByDateSync(userId,datetime);
+    }
 
 
     // Insert

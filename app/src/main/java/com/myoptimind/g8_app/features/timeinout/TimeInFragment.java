@@ -4,11 +4,13 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,14 +77,38 @@ public class TimeInFragment extends Fragment implements LocationListener {
                 }
         );
 
-        btnTimeIn.setOnClickListener(v -> new AlertDialog.Builder(getActivity())
-                .setTitle("Time In")
-                .setMessage("Confirm Time in?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    timeInViewModel.recordTimeIn(TimeInOut.TYPE_TIMEIN);
-                }).setNegativeButton("No", null)
-                .show()
-        );
+        btnTimeIn.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                    .setTitle("Time In");
+            View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.text_input_sales_amount, (ViewGroup) getView(), false);
+            final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+            builder.setView(viewInflated);
+//            builder.setMessage("Confirm Time in?");
+            builder.setPositiveButton("Yes",null).setNegativeButton("No", null);
+            AlertDialog dialog = builder.create();
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+
+                    Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(input.getText().toString().trim().isEmpty()){
+                                Toast.makeText(requireContext(), "Please enter sales amount", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            timeInViewModel.recordTimeIn(TimeInOut.TYPE_TIMEIN, input.getText().toString());
+                            dialog.dismiss();
+                        }
+                    });
+
+
+                }
+            });
+            dialog.show();
+        });
 
         btnEnterStoreInformation.setOnClickListener(v -> {
             storeDialogFragment = StoreDialogFragment.newInstance();

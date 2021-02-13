@@ -2,9 +2,12 @@ package com.myoptimind.g8_app.db;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.myoptimind.g8_app.db.dao.AnnouncementDao;
 import com.myoptimind.g8_app.db.dao.SalesReportDao;
@@ -31,7 +34,7 @@ import com.myoptimind.g8_app.models.UserStore;
         SalesReport.class,
         TimeSlip.class,
         UserStore.class
-},version = 1, exportSchema = false)
+},version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "g8-db";
@@ -51,6 +54,15 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TimeSlipDao timeSlipDao();
 
     public static AppDatabase getInstance(final Context context){
+/*
+
+        Migration MIGRATION_1_2 = new Migration(1, 2) {
+            @Override
+            public void migrate(@NonNull SupportSQLiteDatabase database) {
+                database.execSQL("ALTER TABLE 'time_in_out' ADD COLUMN 'sales_amount' REAL");
+            }
+        };
+*/
 
         synchronized (AppDatabase.class){
 

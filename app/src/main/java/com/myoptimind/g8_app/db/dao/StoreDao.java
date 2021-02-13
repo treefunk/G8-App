@@ -35,7 +35,7 @@ public interface StoreDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertStoreListIgnoreStrat(List<Store> stores);
 
-    @Query("SELECT * FROM store WHERE user_id = :userId AND created_at > :datetime OR updated_at > :datetime ORDER BY created_at,updated_at LIMIT 1")
+    @Query("SELECT * FROM store WHERE user_id = :userId AND (created_at > :datetime OR updated_at > :datetime) ORDER BY created_at,updated_at LIMIT 1")
     Single<Store> getByDateSync(String userId, String datetime);
 
     @Query("SELECT * FROM store WHERE user_id = :userId ORDER BY created_at LIMIT 1")

@@ -58,7 +58,7 @@ public class TimeOutFragment extends Fragment implements LocationListener {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Time Out")
                     .setMessage("Confirm Time out?")
-                    .setPositiveButton("Yes", (dialog, which) -> timeInViewModel.recordTimeIn(TimeInOut.TYPE_TIMEOUT))
+                    .setPositiveButton("Yes", (dialog, which) -> timeInViewModel.recordTimeIn(TimeInOut.TYPE_TIMEOUT,null))
                     .setNegativeButton("No", null)
                     .show();
         });

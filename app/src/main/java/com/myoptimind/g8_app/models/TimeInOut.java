@@ -5,6 +5,8 @@ import androidx.room.Entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import retrofit2.http.POST;
+
 @Entity(tableName = "time_in_out")
 public class TimeInOut extends AppGeneratedEntity {
 
@@ -22,6 +24,19 @@ public class TimeInOut extends AppGeneratedEntity {
 
     @ColumnInfo(name = "type") // 1 - In, 2 - Out
     private int type;
+
+
+    @SerializedName("sales_amount")
+    @ColumnInfo(name = "sales_amount")
+    private double salesAmount;
+
+    public double getSalesAmount() {
+        return salesAmount;
+    }
+
+    public void setSalesAmount(double salesAmount) {
+        this.salesAmount = salesAmount;
+    }
 
     public int getUserId() {
         return userId;

@@ -107,7 +107,8 @@ public class User extends BaseEntity {
     }
 
     public int getTimeInLimit(){
-        switch(getPosition()){
+        return -1; // -1 = unli timein
+/*        switch(getPosition()){
             case User.USER_TYPE_COORDINATOR: {
                 return 3;
             }
@@ -117,7 +118,7 @@ public class User extends BaseEntity {
             default: {
                 return  1;
             }
-        }
+        }*/
     }
 }
 

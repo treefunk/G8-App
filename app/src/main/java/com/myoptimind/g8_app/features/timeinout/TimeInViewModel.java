@@ -174,7 +174,7 @@ public class TimeInViewModel extends AndroidViewModel {
         mCanTimeIn.setValue(false);
     }
 
-    public void recordTimeIn(String type) {
+    public void recordTimeIn(String type, String salesAmount) {
 
         if(currentStore == null){
             message.setValue("No nearby Stores found.");
@@ -190,6 +190,10 @@ public class TimeInViewModel extends AndroidViewModel {
         timeInOut.setType(Integer.parseInt(type));
         timeInOut.setStoreId(currentStore.getUuid());
         timeInOut.setUserId(Integer.parseInt(loggedInId));
+
+        if(salesAmount != null && !salesAmount.trim().isEmpty()){
+            timeInOut.setSalesAmount(Double.parseDouble(salesAmount));
+        }
 
         if(timeInOut.isTimingOut()){
             if(mUser.isCoordinator() || currentStore.getUuid().equals(latestTimeIn.getStoreId())){

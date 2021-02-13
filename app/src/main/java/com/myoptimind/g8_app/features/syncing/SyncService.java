@@ -80,7 +80,7 @@ public interface SyncService {
 
 
     // push store
-    @POST("stores/add")
+    @POST("stores/create")
     @FormUrlEncoded
     Observable<PushStoreResponse> pushStore(
             @Field("uuid") String storeUuid,
@@ -101,6 +101,7 @@ public interface SyncService {
             @Field("store_id") String storeId,
             @Field("uuid") String uuid,
             @Field("type") String type,
+            @Field("sales_amount") String salesAmount,
             @Field("created_at") String createdAt
     );
 

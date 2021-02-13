@@ -99,8 +99,8 @@ public class Syncer {
 
     public void start() {
         // Sync every 2 minutes
-        Observable.interval(15, TimeUnit.SECONDS)
-                .startWith(10L)
+        Observable.interval(60, TimeUnit.SECONDS)
+                .startWith(55L)
                 .doOnNext(n -> {
                         mDisposable.clear();
                         sync();
@@ -189,17 +189,17 @@ public class Syncer {
      * Send stores to server
      */
     public void pushSingleStore(){
-        mDisposable.add(getLastPushOfTable("store")
+        mDisposable.add(getLastPushOfTable("store") // get date sa last_sync table
                 .delaySubscription(2,TimeUnit.SECONDS)
                 .concatMapSingle(lastPushDateResponse -> {
-                    String lastPushDate = lastPushDateResponse.getData().getLastPushDate();
-                    if(!lastPushDate.equals(EMPTY_DATE)){
-                        return mStoreRepository.getByDateForSync(loggedInId,lastPushDate);
+                    String lastPushDate = lastPushDateResponse.getData().getLastPushDate();// eto yung nakuha kong date sa last sync
+                    if(!lastPushDate.equals(EMPTY_DATE)){ // pag may nakuhang date
+                        return mStoreRepository.getByDateForSync(loggedInId,lastPushDate); //  kuha store sa app db (nakuhang date >= created_at ng store)
                     }
-                    return mStoreRepository.getFirstCreated(loggedInId);
+                    return mStoreRepository.getFirstCreated(loggedInId); // pag empty yung date kunin yung pinakaunang store sa app db
                 }).concatMap(this::getStorePushObservable)
                 .subscribeOn(Schedulers.io())
-                .subscribe(pushStoreResponse -> {
+                .subscribe(pushStoreResponse -> { // resposne ng push store
                     Log.d(TAG_STORE,"pushed " + pushStoreResponse.getData().getStoreName());
                     Log.d(TAG_STORE, "message: " + pushStoreResponse.getMeta().getMessage());
                     pushSingleStore();
@@ -272,6 +272,7 @@ public class Syncer {
                 String.valueOf(timeInOut.getStoreId()),
                 timeInOut.getUuid(),
                 String.valueOf(timeInOut.getType()),
+                String.valueOf(timeInOut.getSalesAmount()),
                 timeInOut.getCreatedAt()
         ).subscribeOn(Schedulers.io());
     }

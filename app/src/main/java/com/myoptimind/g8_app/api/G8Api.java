@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -22,7 +23,7 @@ public class G8Api {
 
     private static Retrofit INSTANCE;
 
-    public static final String BASE_URL = "http://g8.betaprojex.com/api/";
+    public static final String BASE_URL = "https://g8.betaprojex.com/api/";
 
 
     private static Retrofit create(HttpUrl httpUrl){
@@ -36,6 +37,7 @@ public class G8Api {
                         return chain.proceed(request);
                     }
                 })
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
 
         if(INSTANCE == null){
